@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARCOSA SLUMBERS — ПОСЛЕДНИЕ НОВОСТИ</title>
+    <style>
+        /* ---------- СБРОС И ГЛОБАЛЬНЫЕ СТИЛИ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @font-face {
+            font-family: 'Tana Uncial SP';
+            src: url('fonts/tana-uncial-sp.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Alegreya SC';
+            src: url('fonts/AlegreyaSC-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: 
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('Texturelabs_Paper_338L (5).jpg') center/cover no-repeat fixed;
+            font-family: 'Alegreya SC', sans-serif, monospace;
+            color: #e6e6e6;
+            line-height: 1.5;
+        }
+
+        .wrapper {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 1rem 2rem;
+            border-radius: 1.5rem;
+            overflow: hidden;
+        }
+
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 1), rgba(0, 0, 0, 0));
+            padding: 1rem 2rem;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            font-weight: 400;
+            margin: 0;
+        }
+
+        header nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        header nav a {
+            color: #ffffff;
+            font-family: 'Alegreya SC';
+            font-size: 16px;
+            text-decoration: none;
+            font-weight: 400;
+            padding: 0.4rem 0;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        header nav a:hover {
+            color: #F59A07;
+        }
+
+        /* ========== ОСНОВНОЙ КОНТЕНТ: ДВЕ КОЛОНКИ ========== */
+        main {
+            display: grid;
+            grid-template-columns: 50% 50%;
+            align-items: stretch;
+            font-family: 'Alegreya SC';
+            gap: 1rem;
+            padding: 2rem 0;
+        }
+
+        /* левая колонка */
+        #news-detail {
+            background: #2a2a2a;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #news-detail time {
+            font-family: monospace;
+            font-size: 16px;
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #888888;
+        }
+
+        #news-detail h2 {
+            font-size: 24px;
+            font-family: 'Alegreya SC';
+            font-weight: 500;
+            margin-bottom: 1rem;
+            color: #fdfdfd;
+        }
+
+        #news-detail img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 0.8rem;
+            margin: 1rem 0;
+        }
+
+        #news-detail p {
+            font-family: 'Alegreya SC';
+            margin-bottom: 1rem;
+            font-weight: 100;
+            font-size: 16px;
+        }
+
+        #news-detail ul {
+            margin-bottom: 1rem;
+            margin-left: 2rem;
+        }
+
+        blockquote {
+            background: #3a3a3a;
+            padding: 1.2rem;
+            font-size: 16px;
+            border-radius: 1rem;
+            margin-top: 0.8rem;
+            color: #cdd1d6;
+        }
+
+        /* правая колонка */
+        #news-list-section {
+            background: #1f1f1f;
+            border-radius: 1rem;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        #news-list-section h2 {
+            font-size: 36px;
+            margin-bottom: 1.2rem;
+            display: inline-block;
+            padding-bottom: 0.2rem;
+            color: #e9ebed;
+        }
+
+        #news-list-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.7rem;
+        }
+
+        article {
+            background: #3a3a3a;
+            padding: 0.7rem 1rem;
+            border-radius: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+            transition: 0.1s linear;
+            cursor: pointer;
+        }
+
+        article:hover {
+            background: #4b4a4b;
+            transform: translateX(3px);
+        }
+
+        article.active {
+            background: #5a5a5a;
+        }
+
+        article time {
+            font-family: monospace;
+            background: #1f1f1f;
+            padding: 0.2rem 0.6rem;
+            border-radius: 1rem;
+            font-size: 0.8rem;
+            color: #b9bfc7;
+            align-self: flex-start;
+        }
+
+        article span {
+            font-weight: normal;
+            color: #dadde2;
+        }
+
+        /* ========== ПОДВАЛ ========== */
+        footer {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+            padding: 2rem;
+            display: flex;
+            font-family: 'Alegreya SC', serif;
+            font-size: 12px;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        footer ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        footer li {
+            margin-bottom: 0.7rem;
+        }
+
+        footer a {
+            color: #bbbbbb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #F59A07;
+        }
+
+        .footer-game-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e0e0e0;
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-copy {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 0.5rem;
+        }
+
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 800px) {
+            main {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 550px) {
+            body {
+                padding: 1rem;
+            }
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+            .wrapper {
+                padding: 1rem;
+            }
+            main {
+                padding: 1rem 0;
+            }
+            article {
+                gap: 0.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CARCOSA SLUMBERS</h1>
+    <nav>
+        <ul>
+            <li><a href="landing 0604.html">дом</a></li>
+            <li><a href="#">трейлер</a></li>
+            <li><a href="#">персонажи</a></li>
+            <li><a href="#">предыстория</a></li>
+            <li><a href="#">галерея</a></li>
+            <li><a href="#">новости</a></li>
+            <li><a href="#">создатели</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="wrapper">
+    <main>
+        <!-- левая колонка: детальный просмотр новости -->
+        <section id="news-detail">
+            <!-- Контент будет динамически вставлен через JavaScript -->
+        </section>
+
+        <!-- правая колонка: список последних новостей -->
+        <section id="news-list-section">
+            <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
+            <div id="news-list-container">
+                <!-- Список новостей будет динамически создан через JavaScript -->
+            </div>
+        </section>
+    </main>
+</div>
+
+<footer>
+    <ul>
+        <li><a href="#">TERMS OF SERVICE</a></li>
+        <li><a href="#">PRIVACY POLICY</a></li>
+        <li><a href="#">TERMS AND CONDITIONS OF USE</a></li>
+        <li><a href="#">TERMS AND CONDITIONS OF RE-CREATION</a></li>
+    </ul>
+    <div>
+        <div class="footer-game-title">CARCOSA SLUMBERS</div>
+        <div class="footer-copy">© 2026 — все права защищены</div>
+    </div>
+</footer>
+
+<script>
+    (function() {
+        // ---------- ДАННЫЕ НОВОСТЕЙ ----------
+        const newsData = [
+            {
+                date: '12/09/2024',
+                title: 'ТУМАН НАД ЛЕСОМ СГУЩАЕТСЯ — анонсирована сюжетная RPG Carcosa Slumbers',
+                content: `
+                    <p>Привет, искатели приключений!</p>
+                    <p>Студия KVN2L с гордостью представляет наш дебютный проект — Carcosa Slumbers, это сюжетная RPG с пошаговыми боями, акцентом на взаимодействие между персонажами и мрачноватой, но уютной атмосферой поздней осени. Группа искателей приключений получает задание от гильдии: выяснить, почему в загадочном лесу пропадают местные жители, и остановить зло, обитающее там.</p>
+                    <p>Вас ждут:</p>
+                    <ul>
+                        <li>глубокие диалоги и система взаимоотношений между персонажами;</li>
+                        <li>развитие героев через уровни, перки и уникальные навыки;</li>
+                        <li>пошаговые бои, где важны не только сила и магия, но и тактика.</li>
+                    </ul>
+                    <p>Впереди огромный путь, но мы полны решимости сделать игру, в которую вы захотите завернуться, как в плед, с кружкой чая.</p>
+                    <p>Оставайтесь с нами. Будем иногда писать дневники разработки.</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            },
+            {
+                date: '04/12/2024',
+                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ 1: Кто эти люди и почему они идут в лес',
+                content: `
+                    <p>Пришло время познакомить вас с теми, за кого вы будете играть. Сегодня — коротко о пятёрке, которая отправится в Каркозу.</p>
+                    <ul>
+                        <li>Вандер - плут-тифлинг, подрабатывающий у главы гильдии - Борна, за несколько золотых. Не его идея была браться за это задание, а подзатыльник от Борна...</li>
+                        <li>Санн - энергичная дворфийска друид с характером бунтарки, которая не против выпить со своими сокомандниками в ближайшей таверне.</li>
+                        <li>Лиор - идущий к своей цели оборотень, следующий за Манной как потерянный щенок.</li>
+                        <li>Манна - Неопытная, только начавшая свой путь эльфийка с огромной тягой к исследованию подземелий и добрым сердцем.</li>
+                        <li>Кэтрин - кровожадная вампирша с топором! Да-да! Погодите, кто дал вампиру топор...</li>
+                    </ul>
+                    <p>Каждый из них будет расти не только в уровнях, но и в отношениях друг с другом. Диалоги и взаимодействия внутри отряда станут важной частью геймплея. Мы хотим, чтобы к середине игры вы чувствовали, что знаете этих персонажей лично.</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            },
+            {
+                date: '10/03/2025',
+                title: 'КИКСТАРТЕР-КАМПАНИЯ CARCOSA SLUMBERS ЗАПУЩЕНА!',
+                content: `
+                    <p>Друзья, мы сделали шаг, который одновременно пугает и вдохновляет: сегодня мы запустили сбор средств на Кикстартере.</p>
+                    <p>Мы прекрасно понимаем, что Carcosa Slumbers — не блокбастер. Это маленькая, камерная RPG, созданная руками горстки энтузиастов. Мы не просим миллионов. Наша цель - 1 000 долларов. Эти деньги пойдут на:</p>
+                    <ul>
+                        <li>оплату работы композитора,</li>
+                        <li>покупку пачки сухариков,</li>
+                        <li>покупку нескольких ассет-паков, чтобы ускорить работу над окружением,</li>
+                        <li>и тестирование на максимальном количестве конфигураций PC, чтобы игра не вылетала на ваших микроволновках и тостерах.</li>
+                    </ul>
+                    <p>Мы подготовили скромные, но душевные награды: цифровой артбук с комментариями художников, саундтрек и возможность назвать одного из NPC. Для SSS-ранкера, самого почетного наемника гильдии мы предлагаем возможность добавить своего персонажа в игру, утвердив и вписав его в необходимый сеттинг.</p>
+                    <p>Если вам нравится то, что мы делаем, — поддержите нас. А если нет возможности, просто расскажите о проекте друзьям. Для маленькой студии это уже огромная помощь.</p>
+                    <p>Спасибо, что читаете нас. Лес зовёт.</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            },
+            {
+                date: '20/05/2025',
+                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ 2: Чем живёт лес Каркозы',
+                content: `
+                    <p>Кампания на Кикстартере (кстати, мы её почти завершили, осталось совсем чуть-чуть!) дала нам сил двигаться дальше. Сегодня покажем, над чем работаем прямо сейчас.</p>
+                    <p>Лес Каркозы — не просто декорация. Он меняется вместе с вашим продвижением. Утром вы можете найти странного шепчущего что-то себе под нос странника, а к вечеру начнёте сомневаться, встречали вы его вообще. Осень в лесу вечна, но оттенки гниения и увядания становятся всё гуще к центру чащи.</p>
+                    <p>В диалогах и описаниях будет много мелких деталей: запах мокрой коры, звук падающих капель с ветвей, внезапная пугающая тишина и неясные шёпоты за спиной. Визуальная новелла-часть позволит нам подробно показывать ключевые сцены покрупнее, в статичных кадрах с лёгкой анимацией.</p>
+                    <p>Из механик сейчас доводим систему навыков. Например, интеллект Маны — на расшифровку старых рун, а мудрость Санн — на распознавание ядовитых растений. Параметры открывают не только боевые возможности, но и альтернативные пути в сюжете.</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            },
+            {
+                date: '05/07/2025',
+                title: 'ОТКРЫТИЕ ПРИЕМА ЗАЯВОК НА ЗАКРЫТЫЙ БЕТА-ТЕСТ: Дорогие согильдийцы у нас есть для вас пара заданий!',
+                content: `
+                    <p>На гильдию напала стая крыс-мутантов и Борну одному не справиться! И в честь этого нам нужна ваша помощь! Мы официально открываем прием заявок на закрытый бета-тест. Все общение будет проходить, к нашему глубочайшему сожалению не по голубиной почте, а в discord. Поэтому всем пройденным отбор наёмникам отправим письмо с приглашением.</p>
+                    <p>Эта непростая работа но мы должны пройти этот путь.</p>
+                    <p>Спасибо за вашу поддержку, нам очень приятно и мы рады вашему фидбеку!</p>
+                    <p>Лес зовет!</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            },
+            {
+                date: '21/12/2025',
+                title: 'ЗАВЕРШЕНИЕ ЗАКРЫТОГО БЕТА-ТЕСТА: спасибо, что искали баги в осенней тьме',
+                content: `
+                    <p>Вот и закончился этап бета-тестирования. Мир сошёл с ума, а мы сидели по ночам и с замиранием сердца читали фидбек. Спасибо всем тридцати двум тестировщикам, которые откликнулись на нашу просьбу в Discord.</p>
+                    <p>Что мы услышали и поправили:</p>
+                    <ul>
+                        <li>Баланс боёв. Да, Кетрин с топором действительно могла в соло уничтожать целые группы врагов, пока Вандер нервно курил в сторонке. Теперь сложность выше, а командные комбинации важнее.</li>
+                        <li>Диалоги. Некоторые сцены казались затянутыми — сократили, но оставили самые тёплые моменты.</li>
+                        <li>Оптимизация. На слабых ноутбуках лес прогружался дольше, чем ползёт улитка. Ускорили.</li>
+                    </ul>
+                    <p>До релиза осталось три-четыре месяца. Мы немного устали, но невероятно счастливы. Когда читаешь отзывы, понимаешь, ради чего всё это.</p>
+                    <p>Дату точную пока не назовём, но смотрите в сторону начала мая.</p>
+                    <p>Шепет становится всё громче.</p>
+                `,
+                img: 'images/Vander_epic_cool_aura.jpg'
+            }
+        ];
+
+        // Переворачиваем массив, чтобы новости шли от новых к старым
+        const orderedNews = [...newsData].reverse();
+
+        // ---------- ЭЛЕМЕНТЫ DOM ----------
+        const newsDetailSection = document.getElementById('news-detail');
+        const newsListContainer = document.getElementById('news-list-container');
+
+        // ---------- ФУНКЦИИ ОТРИСОВКИ ----------
+        function displayNews(index) {
+            const news = orderedNews[index];
+            if (!news) return;
+
+            const detailHTML = `
+                <time datetime="${news.date}">${news.date}</time>
+                <h2>${news.title}</h2>
+                <img src="${news.img}" alt="Изображение новости: ${news.title}">
+                <div>${news.content}</div>
+            `;
+            newsDetailSection.innerHTML = detailHTML;
+
+            // Обновляем активный класс в списке
+            const articles = newsListContainer.querySelectorAll('article');
+            articles.forEach((article, idx) => {
+                if (idx === index) {
+                    article.classList.add('active');
+                } else {
+                    article.classList.remove('active');
+                }
+            });
+        }
+
+        function createNewsList() {
+            orderedNews.forEach((news, index) => {
+                const article = document.createElement('article');
+                article.innerHTML = `
+                    <time datetime="${news.date}">${news.date}</time>
+                    <span>${news.title}</span>
+                `;
+                
+                article.addEventListener('click', () => {
+                    displayNews(index);
+                });
+
+                newsListContainer.appendChild(article);
+            });
+        }
+
+        // ---------- ИНИЦИАЛИЗАЦИЯ ----------
+        document.addEventListener('DOMContentLoaded', () => {
+            createNewsList();
+            if (orderedNews.length > 0) {
+                displayNews(0); // показываем самую свежую новость
+            }
+        });
+    })();
+</script>
+
+</body>
+</html>
