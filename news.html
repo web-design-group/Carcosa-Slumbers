@@ -37,7 +37,7 @@
                 url('img/Texture.jpg') center/cover no-repeat fixed;
             font-family: 'Alegreya SC', sans-serif, monospace;
             color: #e6e6e6;
-            line-height: 1.5;
+            line-height: 1.4;
         }
 
         ::-webkit-scrollbar {
@@ -144,12 +144,14 @@
             object-fit: cover;
             border-radius: 0.8rem;
             margin: 1rem 0;
+            margin-bottom: 2rem;
         }
 
         #news-detail p {
+            color: #d1d1d1;
             font-family: 'Alegreya SC';
+            margin-left: 0.5rem;
             margin-bottom: 1rem;
-            font-weight: 100;
             font-size: 16px;
         }
 
@@ -169,20 +171,22 @@
 
         /* правая колонка */
         #news-list-section {
-            background: #1f1f1f;
+            background: #1f1f1f00;
             border-radius: 1rem;
             padding: 1.2rem;
+            padding-top: 0;
             display: flex;
             flex-direction: column;
             overflow-y: auto;
         }
 
         #news-list-section h2 {
-            font-size: 36px;
-            margin-bottom: 1.2rem;
+            font-size: 48px;
+            font-weight: 400;
             display: inline-block;
-            padding-bottom: 0.2rem;
+            padding-bottom: 1rem;
             color: #e9ebed;
+            text-align: center;
         }
 
         #news-list-container {
@@ -192,7 +196,8 @@
         }
 
         article {
-            background: #3a3a3a;
+            letter-spacing: 0.2px;
+            background: #2a2a2a;
             padding: 0.7rem 1rem;
             border-radius: 0.8rem;
             display: flex;
@@ -213,11 +218,10 @@
 
         article time {
             font-family: monospace;
-            background: #1f1f1f;
-            padding: 0.2rem 0.6rem;
-            border-radius: 1rem;
+            background: #00000000;
             font-size: 0.8rem;
-            color: #b9bfc7;
+            margin-top: 0.2rem;
+            color: #949494;
             align-self: flex-start;
         }
 
@@ -236,6 +240,7 @@
             justify-content: space-between;
             align-items: flex-start;
             flex-wrap: wrap;
+            padding: 3rem 6rem;
             gap: 2rem;
         }
 
@@ -260,13 +265,15 @@
         }
 
         .footer-game-title {
-            font-size: 1.4rem;
-            font-weight: 600;
+            font-size: 32px;
+            font-weight: 400;
             font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
             letter-spacing: 2px;
             text-transform: uppercase;
             color: #e0e0e0;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0rem;
+            width: 200px;
+            line-height: 90%;
         }
 
         .footer-copy {
@@ -336,7 +343,7 @@
 
         <!-- правая колонка: список последних новостей -->
         <section id="news-list-section">
-            <h2>ПОСЛЕДНИЕ НОВОСТИ</h2>
+            <h2>Последние Новости</h2>
             <div id="news-list-container">
                 <!-- Список новостей будет динамически создан через JavaScript -->
             </div>
@@ -345,16 +352,16 @@
 </div>
 
 <footer>
+    <div>
+        <div class="footer-game-title">CARCOSA SLUMBERS</div>
+        <div class="footer-copy">© 2026 — все права защищены</div>
+    </div>
     <ul>
         <li><a href="#">TERMS OF SERVICE</a></li>
         <li><a href="#">PRIVACY POLICY</a></li>
         <li><a href="#">TERMS AND CONDITIONS OF USE</a></li>
         <li><a href="#">TERMS AND CONDITIONS OF RE-CREATION</a></li>
     </ul>
-    <div>
-        <div class="footer-game-title">CARCOSA SLUMBERS</div>
-        <div class="footer-copy">© 2026 — все права защищены</div>
-    </div>
 </footer>
 
 <script>
@@ -380,7 +387,7 @@
             },
             {
                 date: '04/12/2024',
-                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ 1: Кто эти люди и почему они идут в лес',
+                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ I: Кто эти люди и почему они идут в лес',
                 content: `
                     <p>Пришло время познакомить вас с теми, за кого вы будете играть. Сегодня — коротко о пятёрке, которая отправится в Каркозу.</p>
                     <ul>
@@ -414,7 +421,7 @@
             },
             {
                 date: '20/05/2025',
-                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ 2: Чем живёт лес Каркозы',
+                title: 'ДНЕВНИК РАЗРАБОТЧИКОВ II: Чем живёт лес Каркозы',
                 content: `
                     <p>Кампания на Кикстартере (кстати, мы её почти завершили, осталось совсем чуть-чуть!) дала нам сил двигаться дальше. Сегодня покажем, над чем работаем прямо сейчас.</p>
                     <p>Лес Каркозы — не просто декорация. Он меняется вместе с вашим продвижением. Утром вы можете найти странного шепчущего что-то себе под нос странника, а к вечеру начнёте сомневаться, встречали вы его вообще. Осень в лесу вечна, но оттенки гниения и увядания становятся всё гуще к центру чащи.</p>
