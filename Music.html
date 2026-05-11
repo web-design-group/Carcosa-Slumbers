@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CARCOSA SLUMBERS — Music</title>
+    <style>
+        /* === СБРОС И БАЗА === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            min-height: 100%;
+        }
+
+        @font-face {
+            font-family: 'Tana Uncial SP';
+            src: url('font/tana-uncial-sp.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Alegreya SC';
+            src: url('font/AlegreyaSC-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            background: 
+                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('img/Texture.jpg') center/cover no-repeat fixed;
+            font-family: 'Alegreya SC', serif;
+            color: #e6e6e6;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 800px;
+            background: linear-gradient(to bottom, transparent, #0a0a0a);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* === ШАПКА === */
+        header {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+            padding: 2rem 6rem;
+            padding-bottom: 0rem;
+            gap: 1rem;
+        }
+
+        h1 {
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            font-weight: 400;
+            margin: 0;
+            width: 200px;
+            line-height: 90%;
+        }
+
+        header nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-right: 2rem;
+            list-style: none;
+        }
+
+        header nav a {
+            color: #ffffff;
+            font-family: 'Alegreya SC';
+            font-size: 16px;
+            letter-spacing: 0.2px;
+            text-decoration: none;
+            font-weight: 400;
+            padding: 0.3rem 0;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        header nav a:hover {
+            color: #F59A07;
+        }
+
+        header nav {
+            margin-top: 0.2rem;
+        }
+
+        /* === ОСНОВНОЙ КОНТЕНТ === */
+        main {
+            padding: 3rem 2rem 5rem 2rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .music-title {
+            font-family: 'Tana Uncial SP', 'Uncial Antiqua', 'Cinzel', cursive;
+            font-size: 3.5rem;
+            font-weight: 400;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            color: #e0e2e4;
+            margin-bottom: 3rem;
+            margin-top: 1rem;
+            text-align: center;
+            display: inline-block;
+            padding-bottom: 0.75rem;
+        }
+
+        /* Grid из трёх квадратов */
+        .music-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2.5rem 2rem;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        /* Карточка-квадрат */
+        .music-card {
+            background-color: #2A2A2A;
+            aspect-ratio: 1 / 1;
+            width: 100%;
+            border-radius: 6px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.4s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid #3a3a3a;
+            cursor: pointer;
+            padding: 1.5rem 1rem;
+            text-align: center;
+            will-change: transform;
+        }
+
+        /* Вращение при наведении */
+        .music-card.rotating {
+            animation: spin 6s infinite linear;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to   { transform: rotate(360deg); }
+        }
+
+        /* Дополнительный hover-эффект (тень, цвет) */
+        .music-card:hover {
+            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
+            background-color: #353535;
+        }
+
+        .music-icon {
+            font-size: 3.8rem;
+            line-height: 1;
+            margin-bottom: 1rem;
+            color: #bbbbbb;
+            transition: color 0.3s;
+        }
+
+        .music-card:hover .music-icon {
+            color: #F59A07;
+        }
+
+        .music-card h3 {
+            font-family: 'Alegreya SC', serif;
+            font-weight: 500;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            color: #dddddd;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+
+        .music-card p {
+            font-family: 'Alegreya SC', serif;
+            font-size: 0.9rem;
+            color: #9a9ea4;
+            font-weight: 400;
+        }
+
+        /* Сообщение об активации звука */
+        .audio-hint {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #9a9ea4;
+            font-size: 0.9rem;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+
+        /* === ПОДВАЛ === */
+        footer {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+            padding: 2rem;
+            display: flex;
+            font-family: 'Alegreya SC', serif;
+            font-size: 12px;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 3rem 6rem;
+            gap: 2rem;
+        }
+
+        footer ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        footer li {
+            margin-bottom: 0.7rem;
+        }
+
+        footer a {
+            color: #bbbbbb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: #F59A07;
+        }
+
+        .footer-game-title {
+            font-size: 32px;
+            font-weight: 400;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e0e0e0;
+            margin-bottom: 0rem;
+            width: 200px;
+            line-height: 90%;
+        }
+
+        .footer-copy {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 0.5rem;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 700px) {
+            .music-title {
+                font-size: 2.8rem;
+            }
+            .music-grid {
+                gap: 1.5rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .music-grid {
+                grid-template-columns: 1fr;
+                max-width: 320px;
+            }
+            header {
+                flex-direction: column;
+                text-align: center;
+            }
+            h1 {
+                font-size: 1.5rem;
+            }
+        }
+
+        @media (max-width: 800px) {
+            footer {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Шапка -->
+    <header>
+    <h1>CARCOSA SLUMBERS</h1>
+    <nav>
+        <ul>
+            <li><a href="landing.html#hero">дом</a></li>
+            <li><a href="landing.html#trailer">трейлер</a></li>
+            <li><a href="landing.html#cast">персонажи</a></li>
+            <li><a href="landing.html#backstory">предыстория</a></li>
+            <li><a href="landing.html#gallery">галерея</a></li>
+            <li><a href="landing.html#news">новости</a></li>
+            <li><a href="landing.html#creators">создатели</a></li>
+        </ul>
+    </nav>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <div class="music-title">Music</div>
+        
+        <div class="music-grid">
+            <!-- Карточка 1 -->
+            <div class="music-card" data-audio="wolf-howling.mp3">
+                <div class="music-icon">♪</div>
+                <h3>The Awakening of dreams</h3>
+                <p>Original Soundtrack · Chapter 1 · 2026</p>
+            </div>
+            <!-- Карточка 2 -->
+            <div class="music-card" data-audio="track2.mp3">
+                <div class="music-icon">♫</div>
+                <h3>The Sleeping City</h3>
+                <p>Original Soundtrack · Chapter 2 · 2026</p>
+            </div>
+            <!-- Карточка 3 -->
+            <div class="music-card" data-audio="track3.mp3">
+                <div class="music-icon">♬</div>
+                <h3>The Awakening of the King</h3>
+                <p>Original Soundtrack · Chapter 3 · 2026</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Подвал -->
+    <footer>
+        <div>
+            <div class="footer-game-title">CARCOSA SLUMBERS</div>
+            <div class="footer-copy">© 2026 — все права защищены</div>
+        </div>
+        <ul>
+            <li><a href="#">TERMS OF SERVICE</a></li>
+            <li><a href="#">PRIVACY POLICY</a></li>
+            <li><a href="#">TERMS AND CONDITIONS OF USE</a></li>
+            <li><a href="#">TERMS AND CONDITIONS OF RE-CREATION</a></li>
+        </ul>
+    </footer>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // Флаг, показывающий, что аудиоконтекст разблокирован взаимодействием
+            let audioUnlocked = false;
+
+            // Карта для хранения аудиоэлементов, чтобы не создавать много копий
+            const audioCache = new Map();
+
+            // Находим все музыкальные карточки
+            const cards = document.querySelectorAll('.music-card');
+            const hint = document.querySelector('.audio-hint');
+
+            // Функция для получения или создания аудиоэлемента по src
+            function getAudioElement(src) {
+                if (!src) return null;
+                if (audioCache.has(src)) {
+                    return audioCache.get(src);
+                }
+                const audio = new Audio(src);
+                audio.preload = 'auto';
+                // Остановим и сбросим при завершении, если нужно (не обязательно)
+                audio.addEventListener('ended', () => {
+                    audio.currentTime = 0;
+                });
+                audioCache.set(src, audio);
+                return audio;
+            }
+
+            // Функция для остановки всех звуков (кроме текущего, если нужно)
+            function stopAllAudio(exceptAudio = null) {
+                for (let audio of audioCache.values()) {
+                    if (audio !== exceptAudio && !audio.paused) {
+                        audio.pause();
+                        audio.currentTime = 0;
+                    }
+                }
+            }
+
+            // Функция разблокировки аудио (вызывается при клике)
+            function unlockAudio() {
+                if (audioUnlocked) return;
+                
+                // Пытаемся воспроизвести и сразу поставить на паузу беззвучный "пустой" звук
+                const silentAudio = new Audio();
+                silentAudio.play().then(() => {
+                    silentAudio.pause();
+                    audioUnlocked = true;
+                    if (hint) {
+                        hint.style.opacity = '0.5';
+                        hint.textContent = '✓ Звук активирован — наводите на карточки';
+                    }
+                }).catch(e => {
+                    console.warn('Не удалось разблокировать аудио', e);
+                });
+            }
+
+            // Обработчик наведения мыши
+            function handleMouseEnter(e) {
+                const card = e.currentTarget;
+                const audioSrc = card.getAttribute('data-audio');
+                if (!audioSrc) return;
+
+                // Добавляем класс вращения
+                card.classList.add('rotating');
+
+                // Если звук ещё не разблокирован, пробуем разблокировать при наведении
+                if (!audioUnlocked) {
+                    // Без взаимодействия браузер всё равно не даст играть, но попробуем
+                }
+
+                const audio = getAudioElement(audioSrc);
+                if (!audio) return;
+
+                // Останавливаем другие треки
+                stopAllAudio(audio);
+
+                // Запускаем воспроизведение
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        // Ожидаемая ошибка автовоспроизведения — просто игнорируем
+                        console.log('Автовоспроизведение заблокировано. Кликните по карточке.');
+                        // Если звук не разблокирован, показываем подсказку более явно
+                        if (!audioUnlocked && hint) {
+                            hint.style.opacity = '1';
+                            hint.textContent = '🔊 Кликните по карточке для включения звука';
+                        }
+                    });
+                }
+            }
+
+            // Обработчик ухода мыши
+            function handleMouseLeave(e) {
+                const card = e.currentTarget;
+                const audioSrc = card.getAttribute('data-audio');
+                
+                // Убираем вращение
+                card.classList.remove('rotating');
+
+                if (!audioSrc) return;
+                const audio = audioCache.get(audioSrc);
+                if (audio) {
+                    audio.pause();
+                    audio.currentTime = 0;
+                }
+            }
+
+            // Обработчик клика по карточке (для разблокировки аудио и воспроизведения)
+            function handleCardClick(e) {
+                const card = e.currentTarget;
+                const audioSrc = card.getAttribute('data-audio');
+                
+                // Разблокируем аудио при первом клике
+                if (!audioUnlocked) {
+                    unlockAudio();
+                }
+
+                if (!audioSrc) return;
+
+                // Останавливаем все
+                stopAllAudio();
+                const audio = getAudioElement(audioSrc);
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(err => console.log('Ошибка воспроизведения при клике:', err));
+                }
+
+                // Добавим вращение при клике тоже (можно оставить)
+                card.classList.add('rotating');
+                // Через небольшой таймаут уберём, если не наведена мышь
+                setTimeout(() => {
+                    if (!card.matches(':hover')) {
+                        card.classList.remove('rotating');
+                        if (audio) {
+                            audio.pause();
+                            audio.currentTime = 0;
+                        }
+                    }
+                }, 100);
+            }
+
+            // Инициализация: вешаем обработчики на каждую карточку
+            cards.forEach(card => {
+                card.addEventListener('mouseenter', handleMouseEnter);
+                card.addEventListener('mouseleave', handleMouseLeave);
+                card.addEventListener('click', handleCardClick);
+            });
+
+            // Дополнительно: глобальный клик для разблокировки (если пользователь кликнет вне карточки)
+            document.body.addEventListener('click', function globalUnlock() {
+                if (!audioUnlocked) {
+                    unlockAudio();
+                }
+            }, { once: true });
+
+            // Убираем вращение, если мышь ушла, но анимация могла остаться из-за клика
+            window.addEventListener('load', () => {
+                // На всякий случай
+            });
+        })();
+    </script>
+</body>
+</html>

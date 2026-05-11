@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>CARCOSA SLUMBERS — игра о тайнах леса</title>
+    <style>
+        /* ---------- СБРОС И ГЛОБАЛЬНЫЕ СТИЛИ ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @font-face {
+            font-family: 'Tana Uncial SP';
+            src: url('font/tana-uncial-sp.otf') format('opentype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Alegreya SC';
+            src: url('font/AlegreyaSC-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        body {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                url('img/Texture.jpg') center/cover no-repeat fixed;
+            font-family: 'Alegreya SC', sans-serif, monospace;
+            color: #e6e6e6;
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        ::-webkit-scrollbar {
+        width: 0;
+        }
+
+        /* ========== ФИКСИРОВАННЫЙ HEADER ========== */
+        header {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+            padding: 2rem 6rem;
+            padding-bottom: 0rem;
+            gap: 1rem;
+            z-index: 1000;
+        }
+
+        h1 {
+            font-size: 32px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #ffffff;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            font-weight: 400;
+            margin: 0;
+            width: 200px;
+            line-height: 90%;
+        }
+
+        header nav ul {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            margin-right: 2rem;
+            list-style: none;
+        }
+
+        header nav a {
+            color: #ffffff;
+            font-family: 'Alegreya SC';
+            font-size: 16px;
+            letter-spacing: 0.2px;
+            text-decoration: none;
+            padding: 0.3rem 0;
+            transition: 0.2s;
+            border-bottom: 2px solid transparent;
+        }
+
+        header nav a:hover,
+        header nav a.active {
+            color: #F59A07;
+        }
+
+                /* Боковая панель поверх страницы */
+        .sidebar {
+            position: fixed;
+            right: 0;
+            top: 0;
+            width: 80px;
+            height: 100vh;
+            background: linear-gradient(270deg, rgb(0, 0, 0), rgba(0, 0, 0, 0));
+            z-index: 1000;   
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            pointer-events: auto;
+        }
+
+        .sidebar-icon {
+            width: 30px;
+            height: 30px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .sidebar-icon:nth-child(1) {
+            background-image: url('icon1.png');
+        }
+        .sidebar-icon:nth-child(2) {
+            background-image: url('icon2.png');
+        }
+        .sidebar-icon:nth-child(3) {
+            background-image: url('icon3.png');
+        }
+        .sidebar-icon:nth-child(4) {
+            background-image: url('icon4.png');
+        }
+        .sidebar-icon:nth-child(5) {
+            background-image: url('icon5.png');
+        }
+
+        .sidebar-icon:hover {
+            transform: scale(1.1);
+        }
+
+        /* Тело страницы без сдвига */
+        body {
+            margin: 0;              /* убираем любые отступы */
+            padding: 0;
+            /* остальные стили остаются без изменений */
+        }
+
+        /* ========== ОСНОВНОЙ КОНТЕЙНЕР СО СКРОЛЛ-СНЭПОМ ========== */
+        main {
+            height: 100vh;
+            overflow-y: scroll;
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        /* Общие стили секций */
+        .section {
+            height: 100vh;
+            scroll-snap-align: start;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 2rem;
+            position: relative;
+        }
+
+        /* Hero секция с фоном и карточками */
+        .hero-section {
+            width: 100%;
+            min-height: 100vh;     
+            background: url('img/Scary_Vander.jpg') center/cover no-repeat scroll;
+            display: flex;
+            flex-direction: row;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0 0 2rem 0;
+            gap: 0;
+        }
+
+        /* Карточки (три блока) */
+        .hero-cards {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem;
+            margin-bottom: 0;
+        }
+
+        .hero-card {
+            width: 217px;
+            height: 54px;
+            background: #1c1c1c;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+            font-family: 'Alegreya SC', serif;
+            font-weight: 300;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #ffffff;
+            border: 1px solid rgb(255, 255, 255);
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-card:hover {
+            transform: translateY(-5px);
+            border-color: #F59A07;
+        }
+        .hero-card:nth-child(1)::before { content: "Скачать бесплатно!"; display: block; }
+        .hero-card:nth-child(2)::before { content: "Полная Игра"; display: block; }
+        .hero-card:nth-child(3)::before { content: "DELUXE-Издание"; display: block; }
+
+        /* Секция трейлера */
+        .trailer-section {
+            background: url('img/Trailer_Background.png') center/cover no-repeat scroll;
+        }
+        .trailer-label {
+            font-family: 'Alegreya SC', serif;
+            font-size: 32px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #ffffff;
+            text-align: center;
+        }
+        .trailer-placeholder {
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            max-width: 1080px;
+            background-color: #1A1A1A;
+            margin: 0 auto;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+        }
+        .trailer-placeholder iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .section h2 {
+            font-size: 48px;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            letter-spacing: 2px;
+        }
+        .color-block {
+            width: 300px;
+            height: 300px;
+            border-radius: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        /* ===== СЕКЦИЯ ПЕРСОНАЖЕЙ (CAST) ===== */
+        .cast-section {
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+        }
+
+        /* Фоновое изображение персонажа (во весь экран) */
+        .character-bg {
+            position: absolute;
+            top: 0;
+            left: 500px;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        .character-bg img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity 0.9s ease;
+        }
+
+        /* Контейнер поверх фона */
+        .cast-main {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 2rem 5%;
+            gap: 2rem;
+        }
+
+        /* Левая панель с иконками */
+        .characters-nav {
+            display: grid;
+            grid-template-columns: repeat(2, 116px);
+            gap: 1.2rem;
+            flex-shrink: 0;
+            z-index: 3;
+        }
+
+        .char-card {
+            width: 116px;
+            height: 200px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .char-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .char-card.active {
+            border: 2px solid #ffffff;
+            box-shadow: 0 0 15px rgba(245,154,7,0.5);
+        }
+
+        .char-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: opacity 0.4s ease;
+        }
+
+        .more-btn {
+            width: 116px;
+            height: 200px;
+            background: #1C1C1C;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            color: #ffffff;
+            font-family: 'Alegreya SC', serif;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            grid-column: span 1;
+        }
+
+        .more-btn:hover {
+            background: #b6b6b6;
+            color: #000;
+        }
+
+        /* Информация о персонаже (справа) */
+        .character-info {
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: 5%;
+            background: rgba(0, 0, 0, 0);
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            z-index: 3;
+            color: #ffffff;
+            transition: opacity 0.2s;
+        }
+        .character-info.fade-in {
+            animation: softAppear 0.3s;}
+
+        .character-name {
+            font-size: 48px;
+            font-family: 'Alegreya SC', serif;
+            margin-bottom: 0.25rem;
+        }
+
+        .character-race {
+            font-size: 20px;
+            color: #888888;
+            margin-bottom: 1.5rem;
+        }
+
+        .character-description {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #d0d0d0;
+            margin-bottom: 1.5rem;
+        }
+
+        .character-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.8rem 2rem;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+        }
+
+        .stat-name {
+            color: #aaaaaa;
+        }
+
+        .stat-value {
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1200px) {
+            .character-name { font-size: 32px; }
+        }
+
+        @media (max-width: 992px) {
+            .cast-main {
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                padding: 2rem 1rem;
+            }
+            .characters-nav {
+                grid-template-columns: repeat(5, 80px);
+                gap: 1rem;
+                justify-content: center;
+            }
+            .char-card {
+                width: 80px;
+                height: 140px;
+            }
+            .more-btn {
+                width: 80px;
+                height: 140px;
+                font-size: 14px;
+            }
+            .character-info {
+                max-width: 90%;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .characters-nav {
+                grid-template-columns: repeat(5, 60px);
+                gap: 0.8rem;
+            }
+            .char-card {
+                width: 60px;
+                height: 100px;
+            }
+            .more-btn {
+                width: 60px;
+                height: 100px;
+                font-size: 10px;
+            }
+            .character-name { font-size: 24px; }
+            .character-stats { gap: 0.5rem 1rem; }
+            .stat-item { font-size: 12px; }
+        }
+
+        /* ===== Секция backstory (интерактивная) ===== */
+        .backstory-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            max-width: 1620px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .backstory-image {
+            flex: 1;
+            min-width: 500px;
+            max-width: 800px;
+            max-height: 775px;
+        }
+        .backstory-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 1.5rem;
+            display: block;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.5);
+            transition: opacity 0.3s ease;
+        }
+
+        .backstory-content {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 500px;
+            height: 775px;
+            box-sizing: border-box;
+        }
+
+        .backstory-top {
+            flex: 1;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .backstory-content h2 {
+            font-size: 48px;
+            margin-bottom: 1rem;
+            font-weight: 400;
+            font-family: 'Alegreya SC', serif;
+            color: #ffffff;
+        }
+
+        .backstory-description {
+            font-size: 16;
+            font-family: 'Alegreya SC', serif;
+            font-weight: 100;
+            color: #ffffff;
+            height: 550px;
+            padding: 40px;
+            background: rgba(0,0,0,0.5);
+            border-radius: 1.5rem;
+        }
+
+        .backstory-switcher {
+            text-align: center;
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            justify-content: center;
+        }
+
+        .backstory-btn {
+            background: #2a2a2a00;
+            border: 1px solid rgba(0, 0, 0, 0);
+            border-radius: 40px;
+            padding: 0.5rem 50px;
+            font-family: 'Alegreya SC', serif;
+            font-size: 24px;
+            color: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .backstory-btn:hover {
+            color: #F59A07;
+        }
+
+        .backstory-btn.active {
+            color: #F59A07;
+        }
+
+        @media (max-width: 800px) {
+            .backstory-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .backstory-image {
+                min-width: 250px;
+                max-width: 100%;
+            }
+            .backstory-content {
+                height: auto;
+                min-height: 450px;
+            }
+        }
+
+        /* ===== Секция gallery ===== */
+        .gallery-section {
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .gallery-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .gallery-grid {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 100px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-card {
+            text-align: center;
+        }
+
+        .gallery-link {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .gallery-square {
+            width: 350px;
+            height: 350px;
+            background-color: #686868;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+        }
+
+        .gallery-square:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .gallery-label {
+            font-family:'Alegreya SC', serif;
+            font-size: 48px;
+            font-weight: 400;
+            color: #ffffff;
+            transition: color 0.2s;
+        }
+
+        .gallery-link:hover .gallery-label {
+            color: #F59A07;
+        }
+
+        @media (max-width: 800px) {
+            .gallery-grid {
+                gap: 80px;
+            }
+            .gallery-square {
+                width: 300px;
+                height: 300px;
+            }
+            .gallery-label {
+                font-size: 36px;
+            }
+        }
+
+        @media (max-width: 800px) {
+            .gallery-grid {
+                gap: 40px;
+                flex-direction: column;
+                align-items: center;
+            }
+            .gallery-square {
+                width: 280px;
+                height: 280px;
+            }
+            .gallery-label {
+                font-size: 32px;
+            }
+        }
+
+        /* ===== Секция новостей ===== */
+        .news-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            max-width: 1620px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        /* Левая колонка с изображением */
+        .news-image {
+            flex: 1;
+            max-width: 1000px;
+            min-height: 325px;
+        }
+        .news-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 1.5rem;
+            display: block;
+        }
+
+        /* Список новостей */
+        .news-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-item {
+            background: #2a2a2a;
+            border-radius: 14px;
+            padding: 0 16px;
+            height: auto;
+            min-height: 60px;
+            max-height: 120px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 16px;
+            font-family: 'Alegreya SC', monospace;
+            color: #ffffff;
+            transition: 0.2s;
+            overflow: hidden;
+        }
+        .news-item:hover {
+            transform: translateX(5px);
+        }
+        .news-item time {
+            font-family: monospace;
+            background: #00000000;
+            font-size: 16px;
+            margin-top: 0.2rem;
+            color: #949494;
+            white-space: nowrap;
+        }
+        .news-item span {
+            white-space: nowrap;
+            overflow-x: auto;
+            text-overflow: ellipsis;
+        }
+        /* Ссылка "больше" */
+        .news-more {
+            align-self: flex-start;
+            display: inline-block;
+            margin-top: auto;
+            font-family: 'Alegreya SC', serif;
+            font-size: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            padding-bottom: 4px;
+            transition: 0.2s;
+            border-radius: 14px;
+            padding: 10px 16px;
+            border: 1px solid rgb(255, 255, 255);
+        }
+        .news-more:hover {
+            color: #F59A07;
+            letter-spacing: 1px;
+            border: 1px solid #F59A07;
+        }
+
+        @media (max-width: 800px) {
+            .news-container {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .news-content {
+                max-width: 100%;
+                height: auto;
+            }
+            .news-item {
+                height: auto;
+                min-height: 60px;
+                white-space: normal;
+                flex-wrap: wrap;
+                padding: 8px 16px;
+            }
+            .news-item time, .news-item span {
+                white-space: normal;
+                word-break: break-word;
+            }
+        }
+
+        /* Правая колонка с новостями */
+        .news-content {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 753px;
+            min-height: 325px;
+            max-height: 600px;
+            box-sizing: border-box;
+        }
+
+        .news-content h2 {
+            font-size: 48px;
+            margin-bottom: 1rem;
+            font-family: 'Alegreya SC', serif;
+            color: #ffffff;
+            font-weight: 400;
+        }
+        
+        /* Индивидуальные цвета для секций (можно заменить) */
+        #creators .color-block { background: #3f4b5e; }
+
+        /* ========== ПОДВАЛ ========== */
+        footer {
+            background: #000000;
+            padding: 2rem;
+            height: auto;
+            scroll-snap-align: start;
+            display: flex;
+            font-family: 'Alegreya SC', serif;
+            font-size: 12px;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            padding: 3rem 6rem;
+            gap: 2rem;
+        }
+        footer ul {
+            list-style: none;
+            text-align: left;
+        }
+        footer li {
+            margin-bottom: 0.7rem;
+        }
+        footer a {
+            color: #bbbbbb;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+        footer a:hover {
+            color: #F59A07;
+        }
+        .footer-game-title {
+            font-size: 32px;
+            font-weight: 400;
+            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #e0e0e0;
+            margin-bottom: 0rem;
+            width: 200px;
+            line-height: 90%;
+        }
+        .footer-copy {
+            font-size: 12px;
+            color: #888888;
+            margin-top: 0.5rem;
+        }
+
+        /* ========== АДАПТИВНОСТЬ ========== */
+        @media (max-width: 800px) {
+            header {
+                flex-direction: column;
+                text-align: center;
+                padding: 0.8rem 1rem;
+            }
+            h1 { font-size: 1.5rem; }
+            .hero-cards { gap: 1rem; }
+            .hero-card { width: 180px; }
+            .section h2 { font-size: 2rem; }
+            .color-block { width: 220px; height: 220px; }
+        }
+        @media (max-width: 600px) {
+            .hero-cards { flex-direction: column; align-items: center; }
+            .hero-card { width: 217px; }
+        }
+        @media (max-width: 550px) {
+            .trailer-label { font-size: 24px; }
+            .color-block { width: 180px; height: 180px; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>CARCOSA SLUMBERS</h1>
+    <nav>
+        <ul>
+            <li><a href="#hero" class="nav-link">дом</a></li>
+            <li><a href="#trailer" class="nav-link">трейлер</a></li>
+            <li><a href="#cast" class="nav-link">персонажи</a></li>
+            <li><a href="#backstory" class="nav-link">предыстория</a></li>
+            <li><a href="#gallery" class="nav-link">галерея</a></li>
+            <li><a href="#news" class="nav-link">новости</a></li>
+            <li><a href="#creators" class="nav-link">создатели</a></li>
+        </ul>
+    </nav>
+</header>
+
+<aside class="sidebar">
+    <div class="sidebar-icon"></div>
+    <div class="sidebar-icon"></div>
+    <div class="sidebar-icon"></div>
+    <div class="sidebar-icon"></div>
+    <div class="sidebar-icon"></div>
+</aside>
+
+<main>
+    <!-- Секция HERO -->
+    <section id="hero" class="section hero-section">
+        <div class="hero-cards">
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+            <div class="hero-card"></div>
+        </div>
+    </section>
+
+    <!-- Секция TRAILER -->
+    <section id="trailer" class="section trailer-section">
+        <div class="trailer-label">ТРЕЙЛЕР</div>
+        <div class="trailer-placeholder">
+            <iframe 
+                src="https://www.youtube.com/embed/FPQe5PqfAvo?si=topHnMLISXx5Uhfs" 
+                title="YouTube video player" 
+                frameborder="0" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen>
+            </iframe>
+        </div>
+    </section>
+
+    <!-- СЕКЦИЯ CAST -->
+    <section id="cast" class="section cast-section">
+        <!-- Фоновое изображение персонажа -->
+        <div class="character-bg">
+            <img id="char-main-img" src="img/Vander_Big.png" alt="Вандер">
+        </div>
+
+        <div class="cast-main">
+            <!-- Левая колонка: иконки персонажей -->
+            <div class="characters-nav">
+                <div class="char-card active" data-char="vander">
+                    <img src="img/Vander_Trimmed.png" alt="Вандер">
+                </div>
+                <div class="char-card" data-char="sann">
+                    <img src="img/Sann_Trimmed.png" alt="Санн">
+                </div>
+                <div class="char-card" data-char="lior">
+                    <img src="lior_icon.png" alt="ЛиОР">
+                </div>
+                <div class="char-card" data-char="manna">
+                    <img src="manna_icon.png" alt="Манна">
+                </div>
+                <div class="char-card" data-char="cathrin">
+                    <img src="cathrin_icon.png" alt="Кэтрин">
+                </div>
+                <div class="more-btn">Больше →</div>
+            </div>
+
+            <!-- Информация о персонаже (правая часть) -->
+            <div class="character-info">
+                <div class="character-name" id="char-name">Вандер</div>
+                <div class="character-race" id="char-race">Плут / Тифлинг</div>
+                <div class="character-description" id="char-desc">
+                    Молодой тифлинг с серой кожей и черными глазами, носящий потертый плащ и постоянно крутящий в пальцах монетку.<br><br>
+                    Наблюдательный, циничный, обаятельный в нужные моменты. Любит ощущение риска.
+                    Вандер был уличным карманником и мошенником. Всё изменилось, когда он обчистил заезжего волшебника. Среди прочих безделушек он нашёл небольшой, но явно ценный фолиант. Книга манила его. Не в силах её продать, Вандер начал её листать. <br><br>
+                    Однажды ночью, пытаясь разобраться в странных символах, он в отчаянии провёл рукой по странице... и почувствовал, как огонь пробежал по его венам. С тех пор отрывочные знания из книги даровали ему опасную и неуклюжую власть над пламенем. Теперь он скрывается не только от стражи, но и от владельца книги, перебираясь из одной деревушки в другую.
+                </div>
+                <div class="character-stats" id="char-stats">
+                    <div class="stat-item"><span class="stat-name">Сила</span><span class="stat-value">8</span></div>
+                    <div class="stat-item"><span class="stat-name">Ловкость</span><span class="stat-value">16</span></div>
+                    <div class="stat-item"><span class="stat-name">Телосложение</span><span class="stat-value">14</span></div>
+                    <div class="stat-item"><span class="stat-name">Интеллект</span><span class="stat-value">12</span></div>
+                    <div class="stat-item"><span class="stat-name">Мудрость</span><span class="stat-value">10</span></div>
+                    <div class="stat-item"><span class="stat-name">Харизма</span><span class="stat-value">15</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция BACKSTORY -->
+    <section id="backstory" class="section">
+        <div class="backstory-container">
+            <div class="backstory-image">
+                <img id="backstory-img" src="img/story1.jpg" alt="Сюжетное изображение">
+            </div>
+            <div class="backstory-content">
+                <div class="backstory-top">
+                    <h2 id="backstory-title">Гильдия</h2>
+                    <div class="backstory-description" id="backstory-desc">
+                        Игра про группу искателей приключений, отправившихся по заказу гильдии изучить таинственный лес на окраине деревни.<br><br>
+                        «Рад, что вы все откликнулись. Старик Эл, наш лучший лесник, в последнее время бредит каким-то Шепчущим Утёсом. Говорит, лес там гниёт заживо, а несколько групп пропали без вести. Задача проста: дойдите до Утёса, составьте карту, оцените угрозу, найдите хоть какие-то следы пропавших. Эл уже ждёт вас в таверне "Последний Приют" у подножия тех гор. Он ваш контакт. Стандартная плата гильдии плюс доля от любой найденной добычи. Вопросы?»
+                    </div>
+                </div>
+                <div class="backstory-switcher">
+                    <button data-index="0" class="backstory-btn active">I</button>
+                    <button data-index="1" class="backstory-btn">II</button>
+                    <button data-index="2" class="backstory-btn">III</button>
+                    <button data-index="3" class="backstory-btn">IV</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция GALLERY -->
+    <section id="gallery" class="section gallery-section">
+        <div class="gallery-container">
+            <div class="gallery-grid">
+                <div class="gallery-card">
+                    <a href="Music.html" class="gallery-link">
+                        <div class="gallery-square"></div>
+                        <span class="gallery-label">музыка</span>
+                    </a>
+                </div>
+                <div class="gallery-card">
+                    <a href="Gallery.html" class="gallery-link">
+                        <div class="gallery-square"></div>
+                        <span class="gallery-label">обои</span>
+                    </a>
+                </div>
+                <div class="gallery-card">
+                    <a href="video.html" class="gallery-link">
+                        <div class="gallery-square"></div>
+                        <span class="gallery-label">видео</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция NEWS -->
+    <section id="news" class="section">
+        <div class="news-container">
+            <div class="news-image">
+                <img src="img/Vander_epic_cool_aura.jpg" alt="Атмосферное изображение">
+            </div>
+            <div class="news-content">
+                <div class="news-top">
+                    <h2>Последние Новости</h2>
+                    <div class="news-list">
+                        <article class="news-item">
+                            <time datetime="2026-02-24">21-12-2025</time>
+                            <span>ЗАВЕРШЕНИЕ ЗАКРЫТОГО БЕТА-ТЕСТА</span>
+                        </article>
+                        <article class="news-item">
+                            <time datetime="2026-01-01">05-07-2025</time>
+                            <span>ОТКРЫТИЕ ПРИЕМА ЗАЯВОК НА ЗАКРЫЙ БЕТА-ТЕСТ</span>
+                        </article>
+                        <article class="news-item">
+                            <time datetime="2025-09-15">05-12-2025</time>
+                            <span>ДНЕВНИК РАЗРАБОТЧИКОВ II</span>
+                        </article>
+                    </div>
+                </div>
+                <a href="news.html" class="news-more">БОЛЬШЕ</a>
+            </div> 
+        </div>
+    </section>
+
+    <!-- CREATORS -->
+    <section id="creators" class="section">
+        <h2>CREATORS</h2>
+        <div class="color-block">Создатели</div>
+        <p>Команда разработчиков</p>
+    </section>
+
+    <footer>
+        <ul>
+            <li><a href="#">TERMS OF SERVICE</a></li>
+            <li><a href="#">PRIVACY POLICY</a></li>
+            <li><a href="#">TERMS AND CONDITIONS OF USE</a></li>
+            <li><a href="#">TERMS AND CONDITIONS OF RE-CREATION</a></li>
+        </ul>
+        <div>
+            <div class="footer-game-title">CARCOSA SLUMBERS</div>
+            <div class="footer-copy">© 2026 — все права защищены</div>
+        </div>
+    </footer>
+</main>
+
+<script>
+    (function() {
+        const sections = document.querySelectorAll('.section');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const mainContainer = document.querySelector('main');
+
+        // --- Intersection Observer для подсветки активного пункта меню ---
+        const observerOptions = {
+            threshold: 0.4,
+            root: mainContainer,
+            rootMargin: "0px 0px -20% 0px"
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        // --- Плавная прокрутка по клику на пункты меню ---
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href');
+                const targetSection = document.querySelector(targetId);
+                if (targetSection) {
+                    targetSection.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // --- При загрузке страницы активируем пункт для видимой секции ---
+        const activeSection = [...sections].find(section => {
+            const rect = section.getBoundingClientRect();
+            const mainRect = mainContainer.getBoundingClientRect();
+            return rect.top >= mainRect.top && rect.top <= mainRect.bottom - 200;
+        });
+        if (activeSection) {
+            const activeId = activeSection.getAttribute('id');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${activeId}`) {
+                    link.classList.add('active');
+                }
+            });
+        }
+    })();
+
+    // Данные для секции backstory
+    const backstoryData = [
+        {
+            title: "Гильдия",
+            desc: `Игра про группу искателей приключений, отправившихся по заказу гильдии изучить таинственный лес на окраине деревни.\n\n«Рад, что вы все откликнулись. Старик Эл, наш лучший лесник, в последнее время бредит каким-то Шепчущим Утёсом. Говорит, лес там гниёт заживо, а несколько групп пропали без вести. Задача проста: дойдите до Утёса, составьте карту, оцените угрозу, найдите хоть какие-то следы пропавших. Эл уже ждёт вас в таверне "Последний Приют" у подножия тех гор. Он ваш контакт. Стандартная плата гильдии плюс доля от любой найденной добычи. Вопросы?»`,
+            img: "img/story1.jpg"
+        },
+        {
+            title: "Город",
+            desc: `Все познакомились в таверне. Было ощущение, что все вокруг друг друга знают и хлопают друг друга по плечу, словно старые друзья. По крайней мере, так казалось Вандеру, который всех этих «приключенцев» видел впервые, — до тех пор пока не зашла Манна. Она была последним человеком, которого ожидал увидеть Вандер. Он не хотел идти с ней на задание и не хотел даже приближаться к ней. Но хозяин настойчиво требовал деньги за последние ночи, проведённые в таверне, а глава гильдии угрожал исключением, если Вандер в ближайшее время не отправится на задание.\n\n«Похоже, выбора нет», — подумал Вандер и, аккуратно подняв голову, отгоняя неприятные мысли, хитро улыбнулся, увидев, что его уже ждут новые товарищи.`,
+            img: "img/Vander_epic_cool_aura.jpg"
+        },
+        {
+            title: "Шепчущий Утёс",
+            desc: `Игра про группу искателей приключений, отправившихся по заказу гильдии изучить таинственный лес на окраине деревни.\n\n«Рад, что вы все откликнулись. Старик Эл, наш лучший лесник, в последнее время бредит каким-то Шепчущим Утёсом. Говорит, лес там гниёт заживо, а несколько групп пропали без вести. Задача проста: дойдите до Утёса, составьте карту, оцените угрозу, найдите хоть какие-то следы пропавших. Эл уже ждёт вас в таверне "Последний Приют" у подножия тех гор. Он ваш контакт. Стандартная плата гильдии плюс доля от любой найденной добычи. Вопросы?»`,
+            img: "img/story3.png"
+        },
+        {
+            title: "Подземелье",
+            desc: `Деревня выглядит так, будто её покинули вчера. В хижинах стоит нетронутая еда, превратившаяся в камень. Инструменты валяются на местах и хаотично разбросаны вещи как будто перед исчезновением людей произошел балаган. Нет ни пыли, ни паутины. Единственный звук — это едва слышный шепот, исходящий от самих стен, словно дерево впитывало разговоры жителей и теперь тихо их повторяет.\n\nВ самом центре города стоит статуя ангела на возвышенности, руки подняты в молитве и лицо отсутствует, видно как его отскабливали будто пергаментом и оставили одну гладкую поверхность вместо черт лица.\n\nКаков будет конец этой истории?`,
+            img: "img/story4.png"
+        }
+    ];
+
+    // Элементы секции backstory
+    const backstoryImg = document.getElementById('backstory-img');
+    const backstoryTitle = document.getElementById('backstory-title');
+    const backstoryDesc = document.getElementById('backstory-desc');
+    const btns = document.querySelectorAll('.backstory-btn');
+
+    function updateBackstory(index) {
+        if (!backstoryData[index]) return;
+        const data = backstoryData[index];
+        backstoryTitle.textContent = data.title;
+        backstoryDesc.innerHTML = data.desc.replace(/\n/g, '<br>');
+        backstoryImg.src = data.img;
+        btns.forEach((btn, i) => {
+            if (i === index) btn.classList.add('active');
+            else btn.classList.remove('active');
+        });
+    }
+
+    btns.forEach((btn, idx) => {
+        btn.addEventListener('click', () => updateBackstory(idx));
+    });
+
+    // ========== ДАННЫЕ ПЕРСОНАЖЕЙ (обновлённые) ==========
+    const charactersData = {
+        vander: {
+            name: "Вандер",
+            race: "Плут / Тифлинг",
+            desc: `Молодой тифлинг с серой кожей и черными глазами, носящий потертый плащ и постоянно крутящий в пальцах монетку.<br><br>
+            Наблюдательный, циничный, обаятельный в нужные моменты. Любит ощущение риска.
+            Вандер был уличным карманником и мошенником. Всё изменилось, когда он обчистил заезжего волшебника. Среди прочих безделушек он нашёл небольшой, но явно ценный фолиант. Книга манила его. Не в силах её продать, Вандер начал её листать. <br><br>
+            Однажды ночью, пытаясь разобраться в странных символах, он в отчаянии провёл рукой по странице... и почувствовал, как огонь пробежал по его венам. С тех пор отрывочные знания из книги даровали ему опасную и неуклюжую власть над пламенем. Теперь он скрывается не только от стражи, но и от владельца книги, перебираясь из одной деревушки в другую.`,
+            img: "img/Vander_Big.png",
+            stats: [
+                { name: "Сила", value: 8 },
+                { name: "Ловкость", value: 16 },
+                { name: "Телосложение", value: 14 },
+                { name: "Интеллект", value: 12 },
+                { name: "Мудрость", value: 10 },
+                { name: "Харизма", value: 15 }
+            ]
+        },
+        sann: {
+            name: "Санн",
+            race: "Друид / Дворф",
+            desc: `Санн Битрут — харизматичная и громкая дворфийка из деревни шахтёров и кузнецов, с детства питающая особый интерес к природному миру. Познав древнюю магию своих земель, она надеется найти «своих людей» и продолжить путешествовать по ещё никем не изведанным просторам.`,
+            img: "img/Sann_Big.png",
+            stats: [
+                { name: "Сила", value: 16 },
+                { name: "Ловкость", value: 10 },
+                { name: "Телосложение", value: 14 },
+                { name: "Интеллект", value: 6 },
+                { name: "Мудрость", value: 8 },
+                { name: "Харизма", value: 10 }
+            ]
+        },
+        lior: {
+            name: "Лиор",
+            race: "Мечник / Оборотень",
+            desc: `Лиор — молчаливый, предпочитает держаться в тени и избегать внимания окружающих. Его поведение зачастую воспринимается как отчуждённость, однако истинная причина в постоянной бдительности и осторожности. Постоянно анализируя окружающую обстановку на предмет возможных угроз, Лиор стремится защитить себя и тех немногих, кому доверяет. Внутренне он пытается разобраться в природе своего проклятия, надеясь однажды обрести контроль над своим состоянием и понять истину о происхождении собственной ликантропии.`,
+            img: "lior_main.png",
+            stats: [
+                { name: "Сила", value: 16 },
+                { name: "Ловкость", value: 10 },
+                { name: "Телосложение", value: 14 },
+                { name: "Интеллект", value: 6 },
+                { name: "Мудрость", value: 8 },
+                { name: "Харизма", value: 10 }
+            ]
+        },
+        manna: {
+            name: "Манна",
+            race: "Маг / Полу-эльф",
+            desc: `Полу-эльф полу-человек, Маннабель иль Рубинс Галанодель, или же просто Манна, странствует по лесу и собирает все знания о магии и мире, которые она может встретить по пути, в одну книгу с заклинаниями и её личными замечаниями, стараясь тем самым доказать своей семье, что она достойна уважения, даже если отличается от чистокровных эльфов.`,
+            img: "manna_main.png",
+            stats: [
+                { name: "Сила", value: 16 },
+                { name: "Ловкость", value: 10 },
+                { name: "Телосложение", value: 14 },
+                { name: "Интеллект", value: 6 },
+                { name: "Мудрость", value: 8 },
+                { name: "Харизма", value: 10 }
+            ]
+        },
+        cathrin: {
+            name: "Кэтрин",
+            race: "Паладин / Вампир",
+            desc: `Вампирша Кэтрин — воплощение древнего зла, аристократка. Высокая, с поразительно бледной кожей, которая, тем не менее, кажется упругой и здоровой. Короткие, взъерошенные волосы и ярко-красные глаза. Она не заботится о маскировке своего происхождения, предпочитая внушать ужас.<br><br>
+            Ее характер сочетает холодную роскошь и опасную уверенность. Любит контролировать все вокруг, планирует каждое движение, она уверена, что ее видение мира лучше любого другого, и не берет в расчет чужие мнения, если это не служит ее целям. Та еще манипуляторша.`,
+            img: "cathrin_main.png",
+            stats: [
+                { name: "Сила", value: 16 },
+                { name: "Ловкость", value: 10 },
+                { name: "Телосложение", value: 14 },
+                { name: "Интеллект", value: 6 },
+                { name: "Мудрость", value: 8 },
+                { name: "Харизма", value: 10 }
+            ]
+        }
+    };
+
+    // Элементы секции персонажей
+    const charCards = document.querySelectorAll('.char-card');
+    const charMainImg = document.getElementById('char-main-img');
+    const charName = document.getElementById('char-name');
+    const charRace = document.getElementById('char-race');
+    const charDesc = document.getElementById('char-desc');
+    const charStats = document.getElementById('char-stats');
+
+    function updateCharacter(characterId) {
+    const data = charactersData[characterId];
+    if (!data) return;
+
+    // Плавное исчезновение фона
+    charMainImg.style.opacity = '0';
+
+    // Ждём окончания перехода (0.3s), меняем src и показываем снова
+    setTimeout(() => {
+        charMainImg.src = data.img;
+        charMainImg.style.opacity = '1';
+    }, 150); // половина времени перехода, чтобы смена произошла незаметно
+
+    // Обновление текста и статов (можно тоже с лёгким fade, но необязательно)
+    charName.textContent = data.name;
+    charRace.textContent = data.race;
+    charDesc.innerHTML = data.desc;
+
+    charStats.innerHTML = '';
+    data.stats.forEach(stat => {
+        const statDiv = document.createElement('div');
+        statDiv.className = 'stat-item';
+        statDiv.innerHTML = `<span class="stat-name">${stat.name}</span><span class="stat-value">${stat.value}</span>`;
+        charStats.appendChild(statDiv);
+    });
+
+    charCards.forEach(card => {
+        if (card.getAttribute('data-char') === characterId) {
+            card.classList.add('active');
+        } else {
+            card.classList.remove('active');
+        }
+    });
+}
+
+    // Навешиваем обработчики на карточки персонажей (исключая .more-btn)
+    charCards.forEach(card => {
+        card.addEventListener('click', () => {
+            const charId = card.getAttribute('data-char');
+            if (charId) {
+                updateCharacter(charId);
+            }
+        });
+    });
+
+    // Инициализация: активный Вандер (уже установлен по умолчанию)
+</script>
+</body>
+</html>
