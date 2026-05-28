@@ -94,14 +94,14 @@
             color: #F59A07;
         }
 
-                /* Боковая панель поверх страницы */
+                /* Боковая панель */
         .sidebar {
             position: fixed;
             right: 0;
             top: 0;
             width: 80px;
             height: 100vh;
-            background: linear-gradient(270deg, rgb(0, 0, 0), rgba(0, 0, 0, 0));
+            background: linear-gradient(270deg, rgba(0, 0, 0, 0.582), rgba(0, 0, 0, 0));
             z-index: 1000;   
             display: flex;
             flex-direction: column;
@@ -253,7 +253,6 @@
 
         .section h2 {
             font-size: 48px;
-            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
             letter-spacing: 2px;
         }
         .color-block {
@@ -795,8 +794,306 @@
             font-weight: 400;
         }
         
-        /* Индивидуальные цвета для секций (можно заменить) */
-        #creators .color-block { background: #3f4b5e; }
+        /* ===== Секция CREATORS ===== */
+        .creators-section {
+            background: transparent;
+            padding: 2rem;
+            justify-content: flex-start;  /* контент прижат к верху */
+            padding-top: 120px;           /* отступ от фиксированного хедера */
+            overflow-y: auto;
+        }
+
+        .creators-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: stretch;
+            justify-content: center;
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Левая колонка (секция 1) — шире правой */
+        .creators-left {
+            flex: 1.6;                    
+            min-width: 320px;
+            max-width: 710px;             
+            min-height: 750px;
+            background: #212121;
+            border-radius: 40px;
+            padding: 2rem 1.5rem;
+        }
+
+        /* Правая колонка (секции 2+3) — уже */
+        .creators-right {
+            flex: 1.2;
+            min-width: 280px;
+            max-width: 500px;             
+            min-height: 750px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Остальные стили (карточки, иконки) остаются без изменений */
+        .creators-title {
+            font-family: 'Alegreya SC', serif;
+            font-size: 48px;
+            font-weight: 400;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            justify-items: center;
+        }
+
+        .creator-card {
+            background: #1b1b1b;
+            border-radius: 20px;
+            width: 100%;
+            max-width: 246px;
+            padding: 1.5rem 1rem 1.5rem;
+            text-align: center;
+        }
+
+        .creator-avatar {
+            width: min(80%, 198px);
+            aspect-ratio: 1 / 1;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            overflow: hidden;
+            background: #686868;
+        }
+
+        .creator-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .creator-name {
+            font-family: 'Alegreya SC', serif;
+            font-size: 20px;
+            font-weight: 500;
+            color: #ffffff;
+            margin: 0.75rem 0 0.25rem;
+        }
+
+        .creator-role {
+            font-family: 'Alegreya SC', serif;
+            font-size: 16px;
+            color: #bbbbbb;
+        }
+
+        /* Секция 2 — Discord */
+        .creators-social {
+            background: #2a2a2a;
+            border-radius: 40px;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .social-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .discord-text {
+            font-family: 'Alegreya SC', serif;
+            font-size: 28px;
+            font-weight: 400;
+            color: #ffffff;
+            flex: 1;
+        }
+
+        .discord-icons {
+            display: flex;
+            gap: 1rem;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .discord-icons:hover {
+            transform: translateY(-5px);
+        }
+
+        .square-icon {
+            width: 120px;
+            height: 120px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .square-icon img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .social-links {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .social-label {
+            font-family: 'Alegreya SC', serif;
+            font-size: 16px;
+            color: #ffffff;
+        }
+
+        .social-icons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .small-icon {
+            width: 45px;
+            height: 30px;
+            background: #00000000;
+            overflow: hidden;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .small-icon:hover {
+        transform: translateY(-5px);
+        }
+
+        .small-icon img {
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Секция 3 — поддержка */
+        .creators-support {
+            background: #2a2a2a;
+            border-radius: 40px;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content:space-between;
+        }
+
+        .support-title {
+            font-family: 'Alegreya SC', serif;
+            font-size: 24px;
+            font-weight: 400;
+            color: #ffffff;
+            margin-bottom: 1rem;
+        }
+
+        .support-cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+        }
+
+        .support-card {
+            text-align: center;
+            width: 120px;
+            transition: transform 0.2s;
+            cursor: pointer;
+        }
+
+        .support-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .support-icon {
+            width: 87px;
+            height: 100px;
+            background: #00000000;
+            margin-bottom: 0.5rem;
+            overflow: hidden;
+        }
+
+        .support-icon img {
+            width: 90%;
+            height: 90%;
+            object-fit: cover;
+        }
+
+        /* Адаптивность: при ширине меньше 1100px колонки становятся одна под другой */
+        @media (max-width: 1100px) {
+            .creators-wrapper {
+                flex-direction: column;
+                align-items: center;
+            }
+            .creators-left, .creators-right {
+                max-width: 100%;
+                min-height: auto;
+                width: 100%;
+            }
+            .creators-left {
+                flex: auto;
+            }
+            .creators-right {
+                flex: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .creators-title {
+                font-size: 36px;
+            }
+            .discord-text {
+                font-size: 24px;
+            }
+            .support-title {
+                font-size: 24px;
+            }
+            .square-icon, .support-icon {
+                width: 80px;
+                height: 80px;
+            }
+            .small-icon {
+                width: 50px;
+                height: 50px;
+            }
+            .social-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .cards-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .creator-card {
+                max-width: 100%;
+            }
+            .support-cards {
+                gap: 1rem;
+            }
+            .support-card {
+                width: 80px;
+            }
+            .support-icon {
+                width: 80px;
+                height: 80px;
+            }
+            .support-label {
+                font-size: 16px;
+            }
+        }
 
         /* ========== ПОДВАЛ ========== */
         footer {
@@ -887,11 +1184,21 @@
 </header>
 
 <aside class="sidebar">
-    <div class="sidebar-icon"></div>
-    <div class="sidebar-icon"></div>
-    <div class="sidebar-icon"></div>
-    <div class="sidebar-icon"></div>
-    <div class="sidebar-icon"></div>
+    <div class="sidebar-icon">
+        <img src="img/social-twitter.svg">
+    </div>
+    <div class="sidebar-icon">
+        <img src="img/social-bluesky.svg">
+    </div>
+    <div class="sidebar-icon">
+        <img src="img/telegram-white-icon.svg">
+    </div>
+    <div class="sidebar-icon">
+        <img src="img/youtube-app-white-icon.svg">
+    </div>
+    <div class="sidebar-icon">
+        <img src="img/discord-white-icon.svg">
+    </div>
 </aside>
 
 <main>
@@ -909,7 +1216,7 @@
         <div class="trailer-label">ТРЕЙЛЕР</div>
         <div class="trailer-placeholder">
             <iframe 
-                src="https://www.youtube.com/embed/FPQe5PqfAvo?si=topHnMLISXx5Uhfs" 
+                src="<iframe width="560" height="315" src="https://www.youtube.com/embed/ocyb3kTb864?si=apdoQHPXxCqbjjY_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>" 
                 title="YouTube video player" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -972,7 +1279,7 @@
     <section id="backstory" class="section">
         <div class="backstory-container">
             <div class="backstory-image">
-                <img id="backstory-img" src="img/story1.jpg" alt="Сюжетное изображение">
+                <img id="backstory-img" src="img/story1.png" alt="Сюжетное изображение">
             </div>
             <div class="backstory-content">
                 <div class="backstory-top">
@@ -1042,10 +1349,72 @@
     </section>
 
     <!-- CREATORS -->
-    <section id="creators" class="section">
-        <h2>CREATORS</h2>
-        <div class="color-block">Создатели</div>
-        <p>Команда разработчиков</p>
+    <section id="creators" class="section creators-section">
+        <div class="creators-wrapper">
+            <!-- Левая колонка: секция 1 (шире) -->
+            <div class="creators-left">
+                <h2 class="creators-title">Создатели</h2>
+                <div class="cards-grid">
+                    <div class="creator-card">
+                        <div class="creator-avatar"><img src="img/avatar1.png" alt="Авилова Ксения"></div>
+                        <div class="creator-name">Авилова Ксения</div>
+                        <div class="creator-role">Геймдизайнер, программист</div>
+                    </div>
+                    <div class="creator-card">
+                        <div class="creator-avatar"><img src="img/avatar2.jpg" alt="Краснова Елизавета"></div>
+                        <div class="creator-name">Краснова Елизавета</div>
+                        <div class="creator-role">Сценарист, Иллюстратор</div>
+                    </div>
+                    <div class="creator-card">
+                        <div class="creator-avatar"><img src="img/avatar3.png" alt="Мингазова Виктория"></div>
+                        <div class="creator-name">Мингазова Виктория</div>
+                        <div class="creator-role">Иллюстратор</div>
+                    </div>
+                    <div class="creator-card">
+                        <div class="creator-avatar"><img src="img/avatar4.png" alt="Тарасова Анастасия"></div>
+                        <div class="creator-name">Тарасова Анастасия</div>
+                        <div class="creator-role">UI-Художник, Саунд-дизайнер</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Правая колонка: секции 2 и 3 (уже) -->
+            <div class="creators-right">
+                <!-- Секция 2: Discord и соцсети -->
+                <div class="creators-social">
+                    <div class="social-header">
+                        <span class="discord-text">Присоединяйтесь к нашему discord серверу!</span>
+                        <div class="discord-icons">
+                            <div class="square-icon"><img src="img/discord-white-icon.png" alt="иконка"></div>
+                        </div>
+                    </div>
+                    <div class="social-links">
+                        <span class="social-label">Наши соцсети:</span>
+                        <div class="social-icons">
+                            <div class="small-icon"><img src="img/social-twitter.svg" alt="соцсеть"></div>
+                            <div class="small-icon"><img src="img/social-bluesky.svg" alt="соцсеть"></div>
+                            <div class="small-icon"><img src="img/telegram-white-icon.svg" alt="соцсеть"></div>
+                            <div class="small-icon"><img src="img/youtube-app-white-icon.svg" alt="соцсеть"></div>
+                            <div class="small-icon"><img src="img/tumblr-white-icon.svg" alt="соцсеть"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Секция 3: Поддержка -->
+                <div class="creators-support">
+                    <div class="support-title">Поддержать нас можно с помощью:</div>
+                    <div class="support-cards">
+                        <div class="support-card">
+                            <div class="support-icon"><img src="img/boosty-sign-logo.svg" alt="Boosty"></div>
+                        </div>
+                        <div class="support-card">
+                            <div class="support-icon"><img src="img/kickstarter-icon.svg" alt="Kickstarter"></div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </section>
 
     <footer>
@@ -1128,12 +1497,12 @@
         {
             title: "Гильдия",
             desc: `Игра про группу искателей приключений, отправившихся по заказу гильдии изучить таинственный лес на окраине деревни.\n\n«Рад, что вы все откликнулись. Старик Эл, наш лучший лесник, в последнее время бредит каким-то Шепчущим Утёсом. Говорит, лес там гниёт заживо, а несколько групп пропали без вести. Задача проста: дойдите до Утёса, составьте карту, оцените угрозу, найдите хоть какие-то следы пропавших. Эл уже ждёт вас в таверне "Последний Приют" у подножия тех гор. Он ваш контакт. Стандартная плата гильдии плюс доля от любой найденной добычи. Вопросы?»`,
-            img: "img/story1.jpg"
+            img: "img/story1.png"
         },
         {
             title: "Город",
             desc: `Все познакомились в таверне. Было ощущение, что все вокруг друг друга знают и хлопают друг друга по плечу, словно старые друзья. По крайней мере, так казалось Вандеру, который всех этих «приключенцев» видел впервые, — до тех пор пока не зашла Манна. Она была последним человеком, которого ожидал увидеть Вандер. Он не хотел идти с ней на задание и не хотел даже приближаться к ней. Но хозяин настойчиво требовал деньги за последние ночи, проведённые в таверне, а глава гильдии угрожал исключением, если Вандер в ближайшее время не отправится на задание.\n\n«Похоже, выбора нет», — подумал Вандер и, аккуратно подняв голову, отгоняя неприятные мысли, хитро улыбнулся, увидев, что его уже ждут новые товарищи.`,
-            img: "img/Vander_epic_cool_aura.jpg"
+            img: "img/story2.png"
         },
         {
             title: "Шепчущий Утёс",
