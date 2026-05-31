@@ -50,7 +50,7 @@
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
+            background: linear-gradient(180deg, rgb(0, 0, 0), rgba(0, 0, 0, 0));
             padding: 2rem 6rem;
             padding-bottom: 0rem;
             gap: 1rem;
@@ -173,7 +173,7 @@
         .hero-section {
             width: 100%;
             min-height: 100vh;     
-            background: url('img/Scary_Vander.jpg') center/cover no-repeat scroll;
+            background: url('img/Main.png') center/cover no-repeat scroll;
             display: flex;
             flex-direction: row;
             align-items: flex-end;
@@ -225,7 +225,7 @@
 
         /* Секция трейлера */
         .trailer-section {
-            background: url('img/Trailer_Background.png') center/cover no-repeat scroll;
+            background: #000000;
         }
         .trailer-label {
             font-family: 'Alegreya SC', serif;
@@ -316,7 +316,7 @@
         .char-card {
             width: 116px;
             height: 200px;
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border-radius: 8px;
             overflow: hidden;
             position: relative;
@@ -634,6 +634,27 @@
 
         .gallery-link:hover .gallery-label {
             color: #F59A07;
+        }
+
+                /* Изображения внутри квадратов галереи */
+        .gallery-square {
+            background-color: transparent; /* убираем серую заливку */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .gallery-square img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;          /* картинка заполнит квадрат без искажений */
+            transition: filter 0.3s ease;
+        }
+
+        /* При наведении на ссылку можно слегка затемнить картинку (опционально) */
+        .gallery-link:hover .gallery-square img {
+            filter: brightness(1.05);
         }
 
         @media (max-width: 800px) {
@@ -1216,7 +1237,7 @@
         <div class="trailer-label">ТРЕЙЛЕР</div>
         <div class="trailer-placeholder">
             <iframe 
-                src="<iframe width="560" height="315" src="https://www.youtube.com/embed/ocyb3kTb864?si=apdoQHPXxCqbjjY_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>" 
+                src="https://www.youtube.com/embed/ocyb3kTb864?si=VBhB_of2pb8lCgSb" 
                 title="YouTube video player" 
                 frameborder="0" 
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
@@ -1248,7 +1269,7 @@
                     <img src="img/Manna_Trimmed.png" alt="Манна">
                 </div>
                 <div class="char-card" data-char="cathrin">
-                    <img src="img/Cat_Trimmed.png" alt="Кэтрин">
+                    <img src="img/Kat_Trimmed.png" alt="Кэтрин">
                 </div>
                 <div class="more-btn">Больше →</div>
             </div>
@@ -1305,13 +1326,17 @@
             <div class="gallery-grid">
                 <div class="gallery-card">
                     <a href="Music.html" class="gallery-link">
-                        <div class="gallery-square"></div>
+                        <div class="gallery-square">
+                            <img src="img/soundtracks.png" alt="Саундтреки">
+                        </div>
                         <span class="gallery-label">САУНДТРЕКИ</span>
                     </a>
                 </div>
                 <div class="gallery-card">
                     <a href="Gallery.html" class="gallery-link">
-                        <div class="gallery-square"></div>
+                        <div class="gallery-square">
+                            <img src="img/cards.png" alt="Скриншоты">
+                        </div>
                         <span class="gallery-label">СКРИНШОТЫ</span>
                     </a>
                 </div>
@@ -1500,17 +1525,17 @@
             img: "img/story1.png"
         },
         {
-            title: "Город",
+            title: "Шепчущий Утёс",
             desc: `Все познакомились в таверне. Было ощущение, что все вокруг друг друга знают и хлопают друг друга по плечу, словно старые друзья. По крайней мере, так казалось Вандеру, который всех этих «приключенцев» видел впервые, — до тех пор пока не зашла Манна. Она была последним человеком, которого ожидал увидеть Вандер. Он не хотел идти с ней на задание и не хотел даже приближаться к ней. Но хозяин настойчиво требовал деньги за последние ночи, проведённые в таверне, а глава гильдии угрожал исключением, если Вандер в ближайшее время не отправится на задание.\n\n«Похоже, выбора нет», — подумал Вандер и, аккуратно подняв голову, отгоняя неприятные мысли, хитро улыбнулся, увидев, что его уже ждут новые товарищи.`,
             img: "img/story2.png"
         },
         {
-            title: "Шепчущий Утёс",
-            desc: `Игра про группу искателей приключений, отправившихся по заказу гильдии изучить таинственный лес на окраине деревни.\n\n«Рад, что вы все откликнулись. Старик Эл, наш лучший лесник, в последнее время бредит каким-то Шепчущим Утёсом. Говорит, лес там гниёт заживо, а несколько групп пропали без вести. Задача проста: дойдите до Утёса, составьте карту, оцените угрозу, найдите хоть какие-то следы пропавших. Эл уже ждёт вас в таверне "Последний Приют" у подножия тех гор. Он ваш контакт. Стандартная плата гильдии плюс доля от любой найденной добычи. Вопросы?»`,
+            title: "Подземелье",
+            desc: `Коридор уводил вниз, туда, где свет последнего факела тонул в густой, влажной тьме. Каменные ступени под ногами стёрлись от времени, а со стен сочилась не вода — а что-то чёрное, маслянистое, оставлявшее на пальцах запах прелых цветов. Здесь, в подземелье под Шепчущим Утёсом, тишина была не пустой, а живой: она ждала, когда кто-то сделает следующий вдох. Среди разбросанных костей и ржавых обрывков доспехов члены отряда нашли первый след пропавших — походный дневник с оборванной на полуслове записью: «Оно не спит. Оно смотрит сквозь камень. Мы нарушили его сон». Вандер, присев у стены и нервно вертя кинжал, вслух заметил то, о чём думали все: исчезновения в лесу не были случайными — кто-то или что-то затягивало людей всё глубже, к самому сердцу скалы.`,
             img: "img/story3.png"
         },
         {
-            title: "Подземелье",
+            title: "Тихая Деревня",
             desc: `Деревня выглядит так, будто её покинули вчера. В хижинах стоит нетронутая еда, превратившаяся в камень. Инструменты валяются на местах и хаотично разбросаны вещи как будто перед исчезновением людей произошел балаган. Нет ни пыли, ни паутины. Единственный звук — это едва слышный шепот, исходящий от самих стен, словно дерево впитывало разговоры жителей и теперь тихо их повторяет.\n\nВ самом центре города стоит статуя ангела на возвышенности, руки подняты в молитве и лицо отсутствует, видно как его отскабливали будто пергаментом и оставили одну гладкую поверхность вместо черт лица.\n\nКаков будет конец этой истории?`,
             img: "img/story4.png"
         }
@@ -1601,10 +1626,10 @@
         },
         cathrin: {
             name: "Кэтрин",
-            race: "Паладин / Вампир",
+            race: "Варвар / Вампир",
             desc: `Вампирша Кэтрин — воплощение древнего зла, аристократка. Высокая, с поразительно бледной кожей, которая, тем не менее, кажется упругой и здоровой. Короткие, взъерошенные волосы и ярко-красные глаза. Она не заботится о маскировке своего происхождения, предпочитая внушать ужас.<br><br>
             Ее характер сочетает холодную роскошь и опасную уверенность. Любит контролировать все вокруг, планирует каждое движение, она уверена, что ее видение мира лучше любого другого, и не берет в расчет чужие мнения, если это не служит ее целям. Та еще манипуляторша.`,
-            img: "img/Cat_Big.png",
+            img: "img/Kat_Big.png",
             stats: [
                 { name: "Сила", value: 16 },
                 { name: "Ловкость", value: 10 },
