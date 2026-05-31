@@ -3,17 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CARCOSA SLUMBERS — Music</title>
+    <title>CARCOSA SLUMBERS — Саундтреки</title>
     <style>
-        /* === СБРОС И БАЗА === */
+        /* === БАЗОВЫЕ СТИЛИ === */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-        }
-
-        html {
-            min-height: 100%;
         }
 
         @font-face {
@@ -32,31 +28,22 @@
         }
 
         body {
-            background: 
-                linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
-                url('img/Texture.jpg') center/cover no-repeat fixed;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                        url('img/Texture.jpg') center/cover no-repeat fixed;
             font-family: 'Alegreya SC', serif;
             color: #e6e6e6;
             line-height: 1.5;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
             position: relative;
         }
 
-        body::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 800px;
-            background: linear-gradient(to bottom, transparent, #0a0a0a);
-            z-index: -1;
-            pointer-events: none;
+        ::-webkit-scrollbar {
+        width: 0;
         }
 
-        /* === ШАПКА === */
+        /* ШАПКА */
         header {
             width: 100%;
             display: flex;
@@ -64,11 +51,9 @@
             align-items: center;
             flex-wrap: wrap;
             background: linear-gradient(180deg, rgba(0, 0, 0, 0.95), rgba(0, 0, 0, 0));
-            padding: 2rem 6rem;
-            padding-bottom: 0rem;
+            padding: 2rem 6rem 0rem 6rem;
             gap: 1rem;
         }
-
         h1 {
             font-size: 32px;
             letter-spacing: 2px;
@@ -80,7 +65,6 @@
             width: 200px;
             line-height: 90%;
         }
-
         header nav ul {
             display: flex;
             flex-wrap: wrap;
@@ -89,266 +73,320 @@
             margin-right: 2rem;
             list-style: none;
         }
-
         header nav a {
             color: #ffffff;
             font-family: 'Alegreya SC';
             font-size: 16px;
-            letter-spacing: 0.2px;
             text-decoration: none;
-            font-weight: 400;
             padding: 0.3rem 0;
             transition: 0.2s;
             border-bottom: 2px solid transparent;
         }
-
         header nav a:hover {
             color: #F59A07;
         }
 
-        header nav {
-            margin-top: 0.2rem;
-        }
-
-        /* === ОСНОВНОЙ КОНТЕНТ === */
+        /* ОСНОВНОЙ КОНТЕНТ */
         main {
-            padding: 3rem 2rem 5rem 2rem;
-            max-width: 1000px;
-            margin: 0 auto;
             flex: 1;
+            padding: 3rem 2rem 5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
         }
-
         .music-title {
             font-family: 'Alegreya SC', serif;
-            font-size: 3.5rem;
-            font-weight: 400;
+            font-size: 32px;
             letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #e0e2e4;
             margin-bottom: 3rem;
-            margin-top: 1rem;
             text-align: center;
-            display: inline-block;
-            padding-bottom: 0.75rem;
         }
-
-        /* Grid из трёх квадратов */
         .music-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2.5rem 2rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
             width: 100%;
-            max-width: 900px;
+            max-width: 1100px;
             margin: 0 auto;
         }
-
-        /* Карточка-квадрат */
         .music-card {
             background-color: #2A2A2A;
             aspect-ratio: 1 / 1;
-            width: 100%;
-            border-radius: 6px;
+            border-radius: 12px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            transition: all 0.4s ease;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-            border: 1px solid #3a3a3a;
+            transition: 0.3s;
             cursor: pointer;
-            padding: 1.5rem 1rem;
+            border: 1px solid #3a3a3a;
             text-align: center;
-            will-change: transform;
+            padding: 1rem;
+        }
+        .music-card.inactive {
+            cursor: default;
+            opacity: 0.7;
+        }
+        .music-card.inactive:hover {
+            transform: none;
+            background-color: #2A2A2A;
+        }
+        .music-card:not(.inactive):hover {
+            background-color: #353535;
+            transform: scale(1.02);
+        }
+        .music-card h3 {
+            font-size: 24px;
+            font-weight: 400;
+            margin-bottom: 0.5rem;
+        }
+        .music-card p {
+            font-size: 16px;
+            color: #aaa;
         }
 
-        /* Вращение при наведении */
-        .music-card.rotating {
-            animation: spin 6s infinite linear;
+        /* ===== МОДАЛЬНОЕ ОКНО ПЛЕЕРА (увеличенное) ===== */
+        .player-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.466);
+            backdrop-filter: blur(10px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0.3s, opacity 0.3s ease;
+        }
+        .player-overlay.active {
+            visibility: visible;
+            opacity: 1;
+        }
+        .player-container {
+            background: #1e1e1e;
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 90%;
+            max-width: 750px; 
+            position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .player-overlay.active .player-container {
+            transform: scale(1);
+        }
+        .close-player {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 32px;
+            cursor: pointer;
+            color: #fff;
+            background: none;
+            border: none;
+            font-weight: bold;
+            transition: 0.2s;
+        }
+        .close-player:hover {
+            color: #F59A07;
         }
 
-        @keyframes spin {
+        /* Изображение-пластинка (вместо div) */
+        .vinyl-img {
+            display: block;
+            width: 400px;
+            height: 400px;
+            margin: 0 auto 1.5rem;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: 0 0 0 8px #2a2a2a, 0 0 0 12px #1a1a1a;
+            transition: transform 0.1s linear;
+        }
+        .vinyl-img.spinning {
+            animation: spinVinyl 12s linear infinite;
+        }
+        @keyframes spinVinyl {
             from { transform: rotate(0deg); }
             to   { transform: rotate(360deg); }
         }
 
-        /* Дополнительный hover-эффект (тень, цвет) */
-        .music-card:hover {
-            box-shadow: 0 18px 40px rgba(0, 0, 0, 0.8);
-            background-color: #353535;
-        }
-
-        .music-icon {
-            font-size: 3.8rem;
-            line-height: 1;
-            margin-bottom: 1rem;
-            color: #bbbbbb;
-            transition: color 0.3s;
-        }
-
-        .music-card:hover .music-icon {
-            color: #F59A07;
-        }
-
-        .music-card h3 {
-            font-family: 'Alegreya SC', serif;
-            font-weight: 500;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
-            color: #dddddd;
-            margin-bottom: 0.5rem;
-            text-transform: uppercase;
-        }
-
-        .music-card p {
-            font-family: 'Alegreya SC', serif;
-            font-size: 0.9rem;
-            color: #9a9ea4;
-            font-weight: 400;
-        }
-
-        /* Сообщение об активации звука */
-        .audio-hint {
+        .track-title {
             text-align: center;
-            margin-top: 1.5rem;
-            color: #9a9ea4;
-            font-size: 0.9rem;
-            opacity: 0.8;
-            transition: opacity 0.3s;
-        }
-
-        /* === ПОДВАЛ === */
-        footer {
-            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
-            padding: 2rem;
-            display: flex;
-            font-family: 'Alegreya SC', serif;
-            font-size: 12px;
-            justify-content: space-between;
-            align-items: flex-start;
-            flex-wrap: wrap;
-            padding: 3rem 6rem;
-            gap: 2rem;
-        }
-
-        footer ul {
-            list-style: none;
-            text-align: left;
-        }
-
-        footer li {
-            margin-bottom: 0.7rem;
-        }
-
-        footer a {
-            color: #bbbbbb;
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: color 0.2s;
-        }
-
-        footer a:hover {
-            color: #F59A07;
-        }
-
-        .footer-game-title {
             font-size: 32px;
-            font-weight: 400;
-            font-family: 'Tana Uncial SP', 'Alegreya SC', serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: #e0e0e0;
-            margin-bottom: 0rem;
-            width: 200px;
-            line-height: 90%;
+            margin: 1rem 0 0.5rem;
+            font-family: 'Alegreya SC', serif;
+        }
+        .track-artist {
+            text-align: center;
+            color: #aaa;
+            margin-bottom: 1.5rem;
+            font-size: 16px;
         }
 
-        .footer-copy {
-            font-size: 12px;
-            color: #888888;
-            margin-top: 0.5rem;
+        /* Элементы управления */
+        .time-slider {
+            width: 100%;
+            margin: 1rem 0;
+            cursor: pointer;
+            background: #3a3a3a;
+            height: 5px;
+            border-radius: 5px;
+        }
+        .time-slider:focus {
+            outline: none;
+        }
+        .time-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #F59A07;
+            cursor: pointer;
+        }
+        .time-info {
+            display: flex;
+            justify-content: space-between;
+            font-size: 16px;
+            margin-bottom: 1.5rem;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin: 1rem 0;
+        }
+        .ctrl-btn {
+            background: none;
+            border: none;
+            font-size: 2.2rem;
+            cursor: pointer;
+            color: #fff;
+            transition: 0.2s;
+        }
+        .ctrl-btn:hover {
+            color: #F59A07;
         }
 
         /* Адаптивность */
-        @media (max-width: 700px) {
-            .music-title {
-                font-size: 2.8rem;
-            }
+        @media (max-width: 900px) {
             .music-grid {
+                grid-template-columns: repeat(3, 1fr);
                 gap: 1.5rem;
             }
+            .vinyl-img {
+                width: 280px;
+                height: 280px;
+            }
+            .player-container {
+                max-width: 600px;
+                padding: 1.8rem;
+            }
         }
-
+        @media (max-width: 700px) {
+            .music-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .track-title {
+                font-size: 1.6rem;
+            }
+        }
         @media (max-width: 550px) {
             .music-grid {
                 grid-template-columns: 1fr;
-                max-width: 320px;
+                max-width: 280px;
             }
             header {
                 flex-direction: column;
                 text-align: center;
+                padding: 1rem;
             }
             h1 {
                 font-size: 1.5rem;
             }
+            .vinyl-img {
+                width: 200px;
+                height: 200px;
+            }
+            .player-container {
+                width: 95%;
+                padding: 1.2rem;
+            }
+            .ctrl-btn {
+                font-size: 1.8rem;
+            }
         }
 
+        /* Подвал */
+        footer {
+            background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+            padding: 3rem 6rem;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        footer ul {
+            list-style: none;
+        }
+        footer li {
+            margin-bottom: 0.7rem;
+        }
+        footer a {
+            color: #bbbbbb;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        footer a:hover {
+            color: #F59A07;
+        }
+        .footer-game-title {
+            font-size: 32px;
+            font-family: 'Tana Uncial SP', serif;
+            line-height: 90%;
+        }
+        .footer-copy {
+            font-size: 12px;
+            color: #888;
+            margin-top: 0.5rem;
+        }
         @media (max-width: 800px) {
             footer {
                 flex-direction: column;
                 align-items: flex-start;
+                padding: 2rem;
             }
         }
     </style>
 </head>
 <body>
-
-    <!-- Шапка -->
     <header>
-    <h1>CARCOSA SLUMBERS</h1>
-    <nav>
-        <ul>
-            <li><a href="index.html#hero">дом</a></li>
-            <li><a href="index.html#trailer">трейлер</a></li>
-            <li><a href="index.html#cast">персонажи</a></li>
-            <li><a href="index.html#backstory">предыстория</a></li>
-            <li><a href="index.html#gallery">галерея</a></li>
-            <li><a href="index.html#news">новости</a></li>
-            <li><a href="index.html#creators">создатели</a></li>
-        </ul>
-    </nav>
+        <h1>CARCOSA SLUMBERS</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html#hero">дом</a></li>
+                <li><a href="index.html#trailer">трейлер</a></li>
+                <li><a href="index.html#cast">персонажи</a></li>
+                <li><a href="index.html#backstory">предыстория</a></li>
+                <li><a href="index.html#gallery">галерея</a></li>
+                <li><a href="index.html#news">новости</a></li>
+                <li><a href="index.html#creators">создатели</a></li>
+            </ul>
+        </nav>
     </header>
 
-    <!-- Основной контент -->
     <main>
         <div class="music-title">Саундтреки</div>
-        
-        <div class="music-grid">
-            <!-- Карточка 1 -->
-            <div class="music-card" data-audio="wolf-howling.mp3">
-                <div class="music-icon">♪</div>
-                <h3>The Awakening of dreams</h3>
-                <p>Original Soundtrack · Chapter 1 · 2026</p>
-            </div>
-            <!-- Карточка 2 -->
-            <div class="music-card" data-audio="track2.mp3">
-                <div class="music-icon">♫</div>
-                <h3>The Sleeping City</h3>
-                <p>Original Soundtrack · Chapter 2 · 2026</p>
-            </div>
-            <!-- Карточка 3 -->
-            <div class="music-card" data-audio="track3.mp3">
-                <div class="music-icon">♬</div>
-                <h3>The Awakening of the King</h3>
-                <p>Original Soundtrack · Chapter 3 · 2026</p>
-            </div>
-        </div>
+        <div class="music-grid" id="musicGrid"></div>
     </main>
 
-    <!-- Подвал -->
     <footer>
         <div>
             <div class="footer-game-title">CARCOSA SLUMBERS</div>
@@ -362,168 +400,291 @@
         </ul>
     </footer>
 
+    <!-- Модальное окно плеера -->
+    <div id="playerOverlay" class="player-overlay">
+        <div class="player-container">
+            <button class="close-player" id="closePlayerBtn">&times;</button>
+            <!-- Вращающееся изображение (пластинка) -->
+            <img id="vinylImg" class="vinyl-img" src="" alt="Обложка трека">
+            <div class="track-title" id="trackTitle">Лес</div>
+            <div class="track-artist" id="trackArtist">Carcosa Slumbers OST</div>
+            <input type="range" id="progressSlider" class="time-slider" value="0" step="0.01">
+            <div class="time-info">
+                <span id="currentTime">0:00</span>
+                <span id="duration">0:00</span>
+            </div>
+            <div class="controls">
+                <button id="playPauseBtn" class="ctrl-btn">▶</button>
+            </div>
+        </div>
+    </div>
+
     <script>
-        (function() {
-            "use strict";
-
-            // Флаг, показывающий, что аудиоконтекст разблокирован взаимодействием
-            let audioUnlocked = false;
-
-            // Карта для хранения аудиоэлементов, чтобы не создавать много копий
-            const audioCache = new Map();
-
-            // Находим все музыкальные карточки
-            const cards = document.querySelectorAll('.music-card');
-            const hint = document.querySelector('.audio-hint');
-
-            // Функция для получения или создания аудиоэлемента по src
-            function getAudioElement(src) {
-                if (!src) return null;
-                if (audioCache.has(src)) {
-                    return audioCache.get(src);
-                }
-                const audio = new Audio(src);
-                audio.preload = 'auto';
-                // Остановим и сбросим при завершении, если нужно (не обязательно)
-                audio.addEventListener('ended', () => {
-                    audio.currentTime = 0;
-                });
-                audioCache.set(src, audio);
-                return audio;
+        // ===== СПИСОК ТРЕКОВ (с путями к аудио и картинкам) =====
+        // Укажите правильные пути к вашим файлам:
+        // - музыка: папка music/
+        // - изображения: папка img/
+        const tracks = [
+            {
+                id: 0,
+                title: "Таинственный лес",
+                artist: "Carcosa Slumbers OST",
+                file: "music/forest.mp3",
+                image: "img/vinyl_forest.png",   // замените на свою картинку
+                shortDesc: "Глава 1"
+            },
+            {
+                id: 1,
+                title: "Ты уверен?",
+                artist: "Carcosa Slumbers OST",
+                file: "music/battle_simple.mp3",
+                image: "img/vinyl_battle.png",
+                shortDesc: "Глава 2"
+            },
+            {
+                id: 2,
+                title: "Спящий город",
+                artist: "Carcosa Slumbers OST",
+                file: "music/dungeon.mp3",
+                image: "img/vinyl_dungeon.png",
+                shortDesc: "Глава 3"
+            },
+            {
+                id: 3,
+                title: "Сон",
+                artist: "Carcosa Slumbers OST",
+                file: "music/boss_battle.mp3",
+                image: "img/vinyl_boss.png",
+                shortDesc: "Глава 4"
             }
+        ];
 
-            // Функция для остановки всех звуков (кроме текущего, если нужно)
-            function stopAllAudio(exceptAudio = null) {
-                for (let audio of audioCache.values()) {
-                    if (audio !== exceptAudio && !audio.paused) {
-                        audio.pause();
-                        audio.currentTime = 0;
-                    }
-                }
-            }
+        // Две пустые карточки (визуальные, без клика)
+        const dummyCards = [
+            { title: "???????", desc: "???????" },
+            { title: "???????", desc: "???????" }
+        ];
 
-            // Функция разблокировки аудио (вызывается при клике)
-            function unlockAudio() {
-                if (audioUnlocked) return;
-                
-                // Пытаемся воспроизвести и сразу поставить на паузу беззвучный "пустой" звук
-                const silentAudio = new Audio();
-                silentAudio.play().then(() => {
-                    silentAudio.pause();
-                    audioUnlocked = true;
-                    if (hint) {
-                        hint.style.opacity = '0.5';
-                        hint.textContent = '✓ Звук активирован — наводите на карточки';
-                    }
-                }).catch(e => {
-                    console.warn('Не удалось разблокировать аудио', e);
-                });
-            }
-
-            // Обработчик наведения мыши
-            function handleMouseEnter(e) {
-                const card = e.currentTarget;
-                const audioSrc = card.getAttribute('data-audio');
-                if (!audioSrc) return;
-
-                // Добавляем класс вращения
-                card.classList.add('rotating');
-
-                // Если звук ещё не разблокирован, пробуем разблокировать при наведении
-                if (!audioUnlocked) {
-                    // Без взаимодействия браузер всё равно не даст играть, но попробуем
-                }
-
-                const audio = getAudioElement(audioSrc);
-                if (!audio) return;
-
-                // Останавливаем другие треки
-                stopAllAudio(audio);
-
-                // Запускаем воспроизведение
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise.catch(error => {
-                        // Ожидаемая ошибка автовоспроизведения — просто игнорируем
-                        console.log('Автовоспроизведение заблокировано. Кликните по карточке.');
-                        // Если звук не разблокирован, показываем подсказку более явно
-                        if (!audioUnlocked && hint) {
-                            hint.style.opacity = '1';
-                            hint.textContent = '🔊 Кликните по карточке для включения звука';
-                        }
-                    });
-                }
-            }
-
-            // Обработчик ухода мыши
-            function handleMouseLeave(e) {
-                const card = e.currentTarget;
-                const audioSrc = card.getAttribute('data-audio');
-                
-                // Убираем вращение
-                card.classList.remove('rotating');
-
-                if (!audioSrc) return;
-                const audio = audioCache.get(audioSrc);
-                if (audio) {
-                    audio.pause();
-                    audio.currentTime = 0;
-                }
-            }
-
-            // Обработчик клика по карточке (для разблокировки аудио и воспроизведения)
-            function handleCardClick(e) {
-                const card = e.currentTarget;
-                const audioSrc = card.getAttribute('data-audio');
-                
-                // Разблокируем аудио при первом клике
-                if (!audioUnlocked) {
-                    unlockAudio();
-                }
-
-                if (!audioSrc) return;
-
-                // Останавливаем все
-                stopAllAudio();
-                const audio = getAudioElement(audioSrc);
-                if (audio) {
-                    audio.currentTime = 0;
-                    audio.play().catch(err => console.log('Ошибка воспроизведения при клике:', err));
-                }
-
-                // Добавим вращение при клике тоже (можно оставить)
-                card.classList.add('rotating');
-                // Через небольшой таймаут уберём, если не наведена мышь
-                setTimeout(() => {
-                    if (!card.matches(':hover')) {
-                        card.classList.remove('rotating');
-                        if (audio) {
-                            audio.pause();
-                            audio.currentTime = 0;
-                        }
-                    }
-                }, 100);
-            }
-
-            // Инициализация: вешаем обработчики на каждую карточку
-            cards.forEach(card => {
-                card.addEventListener('mouseenter', handleMouseEnter);
-                card.addEventListener('mouseleave', handleMouseLeave);
-                card.addEventListener('click', handleCardClick);
+        // Строим сетку: сначала музыкальные треки, потом пустые
+        const musicGrid = document.getElementById('musicGrid');
+        function buildGrid() {
+            musicGrid.innerHTML = '';
+            // Добавляем музыкальные карточки
+            tracks.forEach((track, idx) => {
+                const card = document.createElement('div');
+                card.className = 'music-card';
+                card.setAttribute('data-track-idx', idx);
+                card.innerHTML = `
+                    <h3>${track.title}</h3>
+                    <p>${track.shortDesc}</p>
+                `;
+                card.addEventListener('click', () => openPlayer(idx));
+                musicGrid.appendChild(card);
             });
-
-            // Дополнительно: глобальный клик для разблокировки (если пользователь кликнет вне карточки)
-            document.body.addEventListener('click', function globalUnlock() {
-                if (!audioUnlocked) {
-                    unlockAudio();
-                }
-            }, { once: true });
-
-            // Убираем вращение, если мышь ушла, но анимация могла остаться из-за клика
-            window.addEventListener('load', () => {
-                // На всякий случай
+            // Добавляем пустые карточки (неактивные)
+            dummyCards.forEach(dummy => {
+                const card = document.createElement('div');
+                card.className = 'music-card inactive';
+                card.innerHTML = `
+                    <h3>${dummy.title}</h3>
+                    <p>${dummy.desc}</p>
+                `;
+                musicGrid.appendChild(card);
             });
-        })();
+        }
+
+        // ---- Плеер ----
+        const overlay = document.getElementById('playerOverlay');
+        const vinylImg = document.getElementById('vinylImg');
+        const trackTitleEl = document.getElementById('trackTitle');
+        const trackArtistEl = document.getElementById('trackArtist');
+        const progressSlider = document.getElementById('progressSlider');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationEl = document.getElementById('duration');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const closeBtn = document.getElementById('closePlayerBtn');
+
+        let currentTrackIdx = 0;
+        let audio = null;
+        let isPlaying = false;
+        let updateInterval = null;
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const mins = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function loadTrack(index) {
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+                if (updateInterval) clearInterval(updateInterval);
+            }
+            const track = tracks[index];
+            if (!track) return;
+            audio = new Audio(track.file);
+            audio.preload = 'auto';
+            trackTitleEl.textContent = track.title;
+            trackArtistEl.textContent = track.artist;
+            // Меняем картинку пластинки на изображение трека
+            vinylImg.src = track.image;
+            vinylImg.alt = `Обложка ${track.title}`;
+            
+            progressSlider.value = 0;
+            currentTimeEl.textContent = "0:00";
+            durationEl.textContent = "0:00";
+            
+            audio.addEventListener('loadedmetadata', () => {
+                durationEl.textContent = formatTime(audio.duration);
+                progressSlider.max = audio.duration;
+            });
+            audio.addEventListener('timeupdate', () => {
+                if (!isNaN(audio.duration)) {
+                    progressSlider.value = audio.currentTime;
+                    currentTimeEl.textContent = formatTime(audio.currentTime);
+                }
+            });
+            audio.addEventListener('ended', () => {
+                // По окончании трека переключаемся на следующий
+                nextTrack();
+            });
+            if (isPlaying) {
+                audio.play().catch(e => console.log("Playback error", e));
+            }
+        }
+
+        function playAudio() {
+            if (!audio) return;
+            audio.play().then(() => {
+                isPlaying = true;
+                playPauseBtn.textContent = '⏸';
+                vinylImg.classList.add('spinning');
+                if (updateInterval) clearInterval(updateInterval);
+                updateInterval = setInterval(() => {
+                    if (audio && !audio.paused && !isNaN(audio.duration)) {
+                        progressSlider.value = audio.currentTime;
+                        currentTimeEl.textContent = formatTime(audio.currentTime);
+                    }
+                }, 200);
+            }).catch(err => {
+                console.warn("Playback blocked", err);
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                vinylImg.classList.remove('spinning');
+            });
+        }
+
+        function pauseAudio() {
+            if (audio) {
+                audio.pause();
+                isPlaying = false;
+                playPauseBtn.textContent = '▶';
+                vinylImg.classList.remove('spinning');
+                if (updateInterval) clearInterval(updateInterval);
+                updateInterval = null;
+            }
+        }
+
+        function togglePlayPause() {
+            if (!audio) return;
+            if (isPlaying) {
+                pauseAudio();
+            } else {
+                playAudio();
+            }
+        }
+
+        function nextTrack() {
+            let newIdx = currentTrackIdx + 1;
+            if (newIdx >= tracks.length) newIdx = 0;
+            currentTrackIdx = newIdx;
+            const wasPlaying = isPlaying;
+            if (wasPlaying) {
+                pauseAudio();
+            }
+            loadTrack(currentTrackIdx);
+            if (wasPlaying) {
+                playAudio();
+            }
+        }
+
+        function prevTrack() {
+            let newIdx = currentTrackIdx - 1;
+            if (newIdx < 0) newIdx = tracks.length - 1;
+            currentTrackIdx = newIdx;
+            const wasPlaying = isPlaying;
+            if (wasPlaying) {
+                pauseAudio();
+            }
+            loadTrack(currentTrackIdx);
+            if (wasPlaying) {
+                playAudio();
+            }
+        }
+
+        function seekTo(value) {
+            if (audio && !isNaN(audio.duration)) {
+                audio.currentTime = parseFloat(value);
+                progressSlider.value = audio.currentTime;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        }
+
+        function openPlayer(index) {
+            currentTrackIdx = index;
+            if (audio) {
+                audio.pause();
+                if (updateInterval) clearInterval(updateInterval);
+                audio = null;
+            }
+            isPlaying = false;
+            loadTrack(currentTrackIdx);
+            overlay.classList.add('active');
+            playAudio(); // автоматически запускаем
+        }
+
+        function closePlayer() {
+            overlay.classList.remove('active');
+            if (audio) {
+                audio.pause();
+                isPlaying = false;
+                if (updateInterval) clearInterval(updateInterval);
+                audio = null;
+            }
+            vinylImg.classList.remove('spinning');
+            playPauseBtn.textContent = '▶';
+        }
+
+        // События
+        playPauseBtn.addEventListener('click', togglePlayPause);
+        progressSlider.addEventListener('input', (e) => seekTo(e.target.value));
+        closeBtn.addEventListener('click', closePlayer);
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) closePlayer();
+        });
+
+        // Клавиатурное управление: стрелки влево/вправо, пробел, Escape
+        window.addEventListener('keydown', (e) => {
+            if (!overlay.classList.contains('active')) return;
+            if (e.key === 'ArrowLeft') {
+                prevTrack();
+                e.preventDefault();
+            } else if (e.key === 'ArrowRight') {
+                nextTrack();
+                e.preventDefault();
+            } else if (e.key === ' ' || e.key === 'Space') {
+                togglePlayPause();
+                e.preventDefault();
+            } else if (e.key === 'Escape') {
+                closePlayer();
+                e.preventDefault();
+            }
+        });
+
+        // Инициализация сетки
+        buildGrid();
     </script>
 </body>
 </html>
